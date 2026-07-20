@@ -19,12 +19,26 @@
         '1516650556972-e9904734f467', // wood table in a bright room
     ];
 
-    // ── GALLERY (folder-driven) ──────────────────────────────────────────
-    // Every image in public/images/gallery/ is shown automatically.
-    // To add a piece: drop a photo into that folder — nothing else to edit.
-    $gallery = collect(glob(public_path('images/gallery/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG}'), GLOB_BRACE))
+    // ── GALLERY (folder-driven, one folder per piece) ────────────────────
+    // Each folder in public/images/gallery/ is one piece. The folder name is
+    // the title (a leading "01-" just controls order). Put MORE than one photo
+    // in a folder and its card becomes a mini-slideshow.
+    // To add a piece: make a folder like "oak-console" and drop photo(s) in.
+    $gallery = collect(glob(public_path('images/gallery/*'), GLOB_ONLYDIR))
         ->sort(SORT_NATURAL)
-        ->map(fn ($p) => '/images/gallery/'.basename($p))
+        ->map(function ($dir) {
+            $slug = basename($dir);
+            $images = collect(glob($dir.'/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG}', GLOB_BRACE))
+                ->sort(SORT_NATURAL)
+                ->map(fn ($p) => '/images/gallery/'.$slug.'/'.basename($p))
+                ->values();
+
+            return [
+                'title'  => \Illuminate\Support\Str::title(str_replace('-', ' ', preg_replace('/^\d+-/', '', $slug))),
+                'images' => $images,
+            ];
+        })
+        ->filter(fn ($p) => $p['images']->isNotEmpty())
         ->values();
 
     // ── BEFORE & AFTER (folder-driven) ───────────────────────────────────
@@ -181,13 +195,41 @@
                     <p class="mt-5 text-lg leading-relaxed text-mocha">From bespoke builds to fine antique restoration — a gallery of recent work, each piece made or restored by hand.</p>
                 </div>
 
-                {{-- Masonry gallery — every image in public/images/gallery/ appears here automatically --}}
-                <div class="columns-1 gap-5 [column-fill:balance] sm:columns-2 lg:columns-3 xl:columns-4">
-                    @foreach ($gallery as $img)
-                        <div class="group mb-5 break-inside-avoid overflow-hidden rounded-sm bg-hair">
-                            <img src="{{ $img }}" alt="Handmade woodwork by {{ $name }}" loading="lazy"
-                                 class="w-full transition duration-[1200ms] ease-out group-hover:scale-[1.04]">
-                        </div>
+                {{-- Masonry gallery — each folder in public/images/gallery/ is a card here --}}
+                <div class="columns-1 gap-6 [column-fill:balance] sm:columns-2 lg:columns-3 xl:columns-4">
+                    @foreach ($gallery as $p)
+                        <figure class="group mb-6 break-inside-avoid">
+                            @if ($p['images']->count() > 1)
+                                {{-- multi-photo piece → mini slideshow --}}
+                                <div x-data="{ i: 0, n: {{ $p['images']->count() }}, t: null,
+                                               play(){ this.t = setInterval(() => this.i = (this.i + 1) % this.n, 3200); },
+                                               stop(){ clearInterval(this.t); } }"
+                                     x-init="play()" @mouseenter="stop()" @mouseleave="play()"
+                                     class="relative aspect-[4/5] overflow-hidden rounded-sm bg-hair">
+                                    @foreach ($p['images'] as $k => $img)
+                                        <img src="{{ $img }}" alt="{{ $p['title'] }}" loading="lazy"
+                                             x-show="i === {{ $k }}"
+                                             x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                                             x-transition:leave="transition ease-in duration-700" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                                             class="absolute inset-0 h-full w-full object-cover">
+                                    @endforeach
+                                    <div class="absolute inset-x-0 bottom-3 z-10 flex justify-center gap-1.5">
+                                        @foreach ($p['images'] as $k => $img)
+                                            <button type="button" @click="i = {{ $k }}" aria-label="Photo {{ $k + 1 }}"
+                                                    class="h-1.5 rounded-full transition-all duration-300"
+                                                    :class="i === {{ $k }} ? 'w-4 bg-ivory' : 'w-1.5 bg-ivory/60'"></button>
+                                        @endforeach
+                                    </div>
+                                    <span class="pointer-events-none absolute right-3 top-3 rounded-full bg-espresso/60 px-2 py-0.5 text-[10px] font-semibold text-ivory">{{ $p['images']->count() }} photos</span>
+                                </div>
+                            @else
+                                <div class="overflow-hidden rounded-sm bg-hair">
+                                    <img src="{{ $p['images'][0] }}" alt="{{ $p['title'] }}" loading="lazy"
+                                         class="w-full transition duration-[1200ms] ease-out group-hover:scale-[1.04]">
+                                </div>
+                            @endif
+                            <figcaption class="mt-3 text-center font-serif text-lg text-espresso">{{ $p['title'] }}</figcaption>
+                        </figure>
                     @endforeach
                 </div>
             </div>
