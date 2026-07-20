@@ -7,23 +7,25 @@
     $phone    = '+44 7700 900123';
     $location = 'Brighton, United Kingdom';
 
-    // Sized Unsplash image URL helper — swap ids for your own project photos.
-    $u = fn (string $id, int $w, int $h) => "https://images.unsplash.com/photo-{$id}?auto=format&fit=crop&q=80&w={$w}&h={$h}";
+    // Real workshop photos live in public/images (wood-XX.jpg).
+    // The About portrait uses /images/wood-14.jpg (the maker at work).
+    $aboutImg = '/images/wood-14.jpg';
 
-    // Big, attractive hero images that cross-fade behind the headline.
+    // Big hero images that cross-fade behind the headline.
     $heroSlides = [
-        '1732801134112-23827e7cbd0d', // gallery of handmade chairs
-        '1653971858625-9cb23d0dca80', // oak sideboard, bright room
-        '1712171984530-e25a4aaa46dd', // finishing a piece by hand
+        '/images/wood-07.jpg', // live-edge table, black legs
+        '/images/wood-13.jpg', // glossy live-edge table top
+        '/images/wood-04.jpg', // ornate polished cabinet
     ];
 
+    // Edit the titles/materials below to match each real piece.
     $projects = [
-        ['id' => '1611486212557-88be5ff6f941', 'title' => 'Oak Bedside Table',   'meta' => 'English Oak · 2024'],
-        ['id' => '1611486212355-d276af4581c0', 'title' => 'Nesting Side Tables',  'meta' => 'Black Walnut · 2024'],
-        ['id' => '1516650556972-e9904734f467', 'title' => 'Round Dining Table',   'meta' => 'Solid Oak · 2023'],
-        ['id' => '1611269154421-4e27233ac5c7', 'title' => 'Writing Desk',         'meta' => 'Ash & Steel · 2023'],
-        ['id' => '1487015307662-6ce6210680f1', 'title' => 'Walnut Coffee Table',  'meta' => 'Black Walnut · 2023'],
-        ['id' => '1544691560-fc2053d97726',    'title' => 'Restored Dresser',     'meta' => 'Mahogany · 2022'],
+        ['img' => '/images/wood-17.jpg', 'title' => 'Live-Edge Dining Table', 'meta' => 'Solid Ash'],
+        ['img' => '/images/wood-03.jpg', 'title' => 'Carved Display Cabinet', 'meta' => 'Hand-carved hardwood'],
+        ['img' => '/images/wood-09.jpg', 'title' => 'Panelled Doors',         'meta' => 'Solid Oak'],
+        ['img' => '/images/wood-19.jpg', 'title' => 'Rustic Bench Set',       'meta' => 'Reclaimed timber'],
+        ['img' => '/images/wood-21.jpg', 'title' => 'Log Side Table',         'meta' => 'Solid log'],
+        ['img' => '/images/wood-20.jpg', 'title' => 'Hand-Carved Panel',      'meta' => 'Relief carving'],
     ];
 
     $nav = ['Work' => '#work', 'Studio' => '#about', 'Contact' => '#contact'];
@@ -38,7 +40,6 @@
         <meta name="description" content="{{ $name }} — {{ $role }}. Bespoke handmade furniture and joinery. Available for commissions.">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
         <link href="https://fonts.bunny.net/css?family=cormorant-garamond:400,500,600,500i,600i|figtree:400,500,600&display=swap" rel="stylesheet" />
 
         @livewireStyles
@@ -112,7 +113,7 @@
                      x-transition:leave="transition ease-in duration-[1400ms]"
                      x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                      class="absolute inset-0">
-                    <img src="{{ $u($sid, 1920, 1080) }}" alt="" @if($i === 0) fetchpriority="high" @else loading="lazy" @endif
+                    <img src="{{ $sid }}" alt="" @if($i === 0) fetchpriority="high" @else loading="lazy" @endif
                          class="h-full w-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-espresso/85 via-espresso/45 to-espresso/40"></div>
                 </div>
@@ -157,7 +158,7 @@
                     @foreach ($projects as $p)
                         <figure class="group reveal">
                             <div class="overflow-hidden rounded-sm bg-hair">
-                                <img src="{{ $u($p['id'], 700, 875) }}" alt="{{ $p['title'] }} — {{ $p['meta'] }}" loading="lazy"
+                                <img src="{{ $p['img'] }}" alt="{{ $p['title'] }} — {{ $p['meta'] }}" loading="lazy"
                                      class="aspect-[4/5] w-full object-cover transition duration-[1200ms] ease-out group-hover:scale-[1.05]">
                             </div>
                             <figcaption class="mt-5 text-center">
@@ -175,7 +176,7 @@
             <div class="mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
                 <div class="reveal">
                     <div class="overflow-hidden rounded-sm bg-hair">
-                        <img src="{{ $u('1679797850019-3d0d8659a695', 900, 1080) }}" alt="{{ $name }} at work in the workshop"
+                        <img src="{{ $aboutImg }}" alt="{{ $name }} at work in the workshop"
                              class="aspect-[4/5] w-full object-cover" loading="lazy">
                     </div>
                 </div>
