@@ -125,16 +125,17 @@
                      class="absolute inset-0">
                     <img src="{{ $u($sid, 1920, 1080) }}" alt="" @if($i === 0) fetchpriority="high" @else loading="lazy" @endif
                          class="h-full w-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-espresso/85 via-espresso/40 to-espresso/25"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-espresso/85 via-espresso/55 to-espresso/45"></div>
+                    <div class="absolute inset-0 bg-espresso/25"></div>
                 </div>
             @endforeach
 
             <div class="relative z-10 mx-auto flex h-full max-w-4xl flex-col items-center justify-center px-6 text-center lg:px-8">
-                <p class="mb-6 text-xs font-medium uppercase tracking-[0.35em] text-gold">Bespoke Furniture · Est. 2010</p>
-                <h1 class="font-serif text-5xl font-medium leading-[1.05] text-ivory drop-shadow sm:text-7xl">
+                <p class="mb-6 text-xs font-semibold uppercase tracking-[0.35em] text-brass-300 [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]">Bespoke Furniture · Est. 2010</p>
+                <h1 class="font-serif text-5xl font-medium leading-[1.05] text-ivory [text-shadow:0_2px_20px_rgba(0,0,0,0.6)] sm:text-7xl">
                     Furniture, made to<br>last a lifetime.
                 </h1>
-                <p class="mx-auto mt-7 max-w-xl text-lg leading-relaxed text-ivory/85">
+                <p class="mx-auto mt-7 max-w-xl text-lg leading-relaxed text-ivory [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]">
                     I'm {{ $name }} — a {{ strtolower($role) }} in {{ $location }}, crafting heirloom pieces by hand, from a single sketch to the final coat of oil.
                 </p>
                 <div class="mt-9 flex items-center justify-center gap-8">
