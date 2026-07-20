@@ -21,20 +21,20 @@
 
     // COLLECTION: your real finished pieces. Edit titles/materials to taste.
     $projects = [
+        ['img' => '/images/wood-22.jpg', 'title' => 'Dining Table & Stools',  'meta' => 'Stained pine'],
         ['img' => '/images/wood-13.jpg', 'title' => 'Live-Edge Dining Table', 'meta' => 'Solid Ash'],
-        ['img' => '/images/wood-19.jpg', 'title' => 'Rustic Bench Set',        'meta' => 'Reclaimed timber'],
+        ['img' => '/images/wood-19.jpg', 'title' => 'Rustic Bench & Stool',   'meta' => 'Solid pine'],
         ['img' => '/images/wood-21.jpg', 'title' => 'Log Side Table',          'meta' => 'Solid log'],
         ['img' => '/images/wood-20.jpg', 'title' => 'Hand-Carved Panel',       'meta' => 'Relief carving'],
-        ['img' => '/images/wood-18.jpg', 'title' => 'Live-Edge Serving Board', 'meta' => 'Olive & resin'],
         ['img' => '/images/wood-15.jpg', 'title' => 'Fitted Wall Shelf',       'meta' => 'Solid oak'],
     ];
 
-    // BEFORE & AFTER: drag the slider on each. IMPORTANT — set each pair to
-    // the SAME piece photographed before and after, so it's honest.
+    // BEFORE & AFTER: drag the slider on each. Each pair is the SAME piece
+    // photographed before and after. 'aspect' controls the slider shape.
     $beforeAfter = [
-        ['before' => '/images/wood-05.jpg', 'after' => '/images/wood-07.jpg', 'title' => 'Live-Edge Dining Table', 'blurb' => 'A rough hardwood slab, planed, jointed and finished into a dining table on hand-welded steel legs.'],
-        ['before' => '/images/wood-08.jpg', 'after' => '/images/wood-09.jpg', 'title' => 'Panelled Doors',         'blurb' => 'Raw carved panels brought to a deep, hand-rubbed finish.'],
-        ['before' => '/images/wood-03.jpg', 'after' => '/images/wood-04.jpg', 'title' => 'Restored Cabinet',       'blurb' => 'A tired carcass stripped, repaired and French-polished back to life.'],
+        ['before' => '/images/wood-24.jpg', 'after' => '/images/wood-23.jpg', 'aspect' => 'aspect-[3/4]', 'title' => 'Restored Panelled Door', 'blurb' => 'An old door stripped back to bare timber, repaired and repainted to a smooth, even finish.'],
+        ['before' => '/images/wood-05.jpg', 'after' => '/images/wood-07.jpg', 'aspect' => 'aspect-[4/3]', 'title' => 'Live-Edge Dining Table', 'blurb' => 'A rough hardwood slab, planed, jointed and finished into a dining table on hand-welded steel legs.'],
+        ['before' => '/images/wood-03.jpg', 'after' => '/images/wood-04.jpg', 'aspect' => 'aspect-[3/4]', 'title' => 'Restored Cabinet',       'blurb' => 'A tired carcass stripped, repaired and French-polished back to life.'],
     ];
 
     $nav = ['Work' => '#work', 'Before & After' => '#restoration', 'Studio' => '#about', 'Contact' => '#contact'];
@@ -202,7 +202,7 @@
                                      @pointerdown="drag = true; move($event)"
                                      @pointermove="drag && move($event)"
                                      @pointerup.window="drag = false"
-                                     class="group relative aspect-[4/3] w-full cursor-ew-resize touch-none select-none overflow-hidden rounded-sm bg-hair">
+                                     class="group relative {{ $ba['aspect'] ?? 'aspect-[4/3]' }} w-full cursor-ew-resize touch-none select-none overflow-hidden rounded-sm bg-hair">
                                     {{-- After (full) --}}
                                     <img src="{{ $ba['after'] }}" alt="{{ $ba['title'] }} — after" draggable="false"
                                          class="pointer-events-none absolute inset-0 h-full w-full object-cover" loading="lazy">
