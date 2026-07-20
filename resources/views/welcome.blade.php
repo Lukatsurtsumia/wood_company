@@ -193,6 +193,11 @@
                     <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-gold">Selected Work</p>
                     <h2 class="font-serif text-4xl font-medium text-espresso sm:text-5xl">The Collection</h2>
                     <p class="mt-5 text-lg leading-relaxed text-mocha">From bespoke builds to fine antique restoration — a gallery of recent work, each piece made or restored by hand.</p>
+                    <div class="mt-8 flex items-center justify-center gap-3" aria-hidden="true">
+                        <span class="h-px w-14 bg-gradient-to-r from-transparent to-gold/50"></span>
+                        <span class="h-1.5 w-1.5 rotate-45 bg-gold"></span>
+                        <span class="h-px w-14 bg-gradient-to-l from-transparent to-gold/50"></span>
+                    </div>
                 </div>
 
                 {{-- Masonry gallery — each folder in public/images/gallery/ is a card here --}}
@@ -205,7 +210,7 @@
                                                play(){ this.t = setInterval(() => this.i = (this.i + 1) % this.n, 3200); },
                                                stop(){ clearInterval(this.t); } }"
                                      x-init="play()" @mouseenter="stop()" @mouseleave="play()"
-                                     class="relative aspect-[4/5] overflow-hidden rounded-sm bg-hair">
+                                     class="relative aspect-[4/5] overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/[0.08] transition-shadow duration-500 group-hover:shadow-[0_22px_45px_-24px_rgba(43,38,32,0.45)]">
                                     @foreach ($p['images'] as $k => $img)
                                         <img src="{{ $img }}" alt="{{ $p['title'] }}" loading="lazy"
                                              x-show="i === {{ $k }}"
@@ -223,12 +228,15 @@
                                     <span class="pointer-events-none absolute right-3 top-3 rounded-full bg-espresso/60 px-2 py-0.5 text-[10px] font-semibold text-ivory">{{ $p['images']->count() }} photos</span>
                                 </div>
                             @else
-                                <div class="overflow-hidden rounded-sm bg-hair">
+                                <div class="overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/[0.08] transition-shadow duration-500 group-hover:shadow-[0_22px_45px_-24px_rgba(43,38,32,0.45)]">
                                     <img src="{{ $p['images'][0] }}" alt="{{ $p['title'] }}" loading="lazy"
-                                         class="w-full transition duration-[1200ms] ease-out group-hover:scale-[1.04]">
+                                         class="w-full transition duration-[1400ms] ease-out group-hover:scale-[1.05]">
                                 </div>
                             @endif
-                            <figcaption class="mt-3 text-center font-serif text-lg text-espresso">{{ $p['title'] }}</figcaption>
+                            <figcaption class="mt-4 text-center">
+                                <span class="mx-auto mb-2 block h-px w-6 bg-gold/60 transition-all duration-500 group-hover:w-12"></span>
+                                <h3 class="font-serif text-lg font-medium tracking-wide text-espresso transition-colors duration-300 group-hover:text-gold">{{ $p['title'] }}</h3>
+                            </figcaption>
                         </figure>
                     @endforeach
                 </div>
@@ -242,6 +250,11 @@
                     <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-gold">From Rough to Refined</p>
                     <h2 class="font-serif text-4xl font-medium text-espresso sm:text-5xl">Before &amp; After</h2>
                     <p class="mt-5 text-lg leading-relaxed text-mocha">Drag the handle to see each piece transformed — from raw timber and tired carcasses to finished, heirloom furniture.</p>
+                    <div class="mt-8 flex items-center justify-center gap-3" aria-hidden="true">
+                        <span class="h-px w-14 bg-gradient-to-r from-transparent to-gold/50"></span>
+                        <span class="h-1.5 w-1.5 rotate-45 bg-gold"></span>
+                        <span class="h-px w-14 bg-gradient-to-l from-transparent to-gold/50"></span>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-x-10 gap-y-14 sm:grid-cols-2">
@@ -255,7 +268,7 @@
                                      @pointerdown="drag = true; move($event)"
                                      @pointermove="drag && move($event)"
                                      @pointerup.window="drag = false"
-                                     class="group relative {{ $ba['aspect'] ?? 'aspect-[4/3]' }} mx-auto w-full max-w-sm cursor-ew-resize touch-none select-none overflow-hidden rounded-sm bg-hair">
+                                     class="group relative {{ $ba['aspect'] ?? 'aspect-[4/3]' }} mx-auto w-full max-w-sm cursor-ew-resize touch-none select-none overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/10 shadow-[0_18px_40px_-24px_rgba(43,38,32,0.45)]">
                                     {{-- After (full) --}}
                                     <img src="{{ $ba['after'] }}" alt="{{ $ba['title'] }} — after" draggable="false"
                                          class="pointer-events-none absolute inset-0 h-full w-full object-cover" loading="lazy">
@@ -269,15 +282,16 @@
                                     {{-- Handle --}}
                                     <div class="pointer-events-none absolute inset-y-0 z-10 flex w-0 items-center justify-center" :style="`left: ${pos}%`">
                                         <div class="absolute inset-y-0 w-0.5 bg-ivory/90"></div>
-                                        <div class="flex h-11 w-11 items-center justify-center rounded-full border border-espresso/10 bg-ivory shadow-lg">
-                                            <svg class="h-5 w-5 text-espresso" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l-4 3 4 3M16 9l4 3-4 3"/></svg>
+                                        <div class="flex h-11 w-11 items-center justify-center rounded-full border border-gold/60 bg-ivory shadow-lg ring-2 ring-white/40">
+                                            <svg class="h-5 w-5 text-gold" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l-4 3 4 3M16 9l4 3-4 3"/></svg>
                                         </div>
                                     </div>
                                 </div>
                             </figure>
                             <figcaption class="mt-5 text-center">
+                                <span class="mx-auto mb-3 block h-px w-8 bg-gold/60"></span>
                                 <p class="mb-1.5 text-xs font-medium uppercase tracking-[0.3em] text-gold">0{{ $i + 1 }} — Restoration</p>
-                                <h3 class="font-serif text-2xl font-medium text-espresso">{{ $ba['title'] }}</h3>
+                                <h3 class="font-serif text-2xl font-medium tracking-wide text-espresso">{{ $ba['title'] }}</h3>
                                 <p class="mt-1.5 text-sm text-mocha">Drag the handle to reveal the transformation.</p>
                             </figcaption>
                         </div>
