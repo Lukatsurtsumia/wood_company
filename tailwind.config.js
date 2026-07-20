@@ -13,9 +13,18 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-                display: ['Fraunces', ...defaultTheme.fontFamily.serif],
+                serif: ['"Cormorant Garamond"', ...defaultTheme.fontFamily.serif],
+                display: ['"Cormorant Garamond"', ...defaultTheme.fontFamily.serif],
             },
             colors: {
+                // Elegant, luxury light palette
+                ivory: '#faf7f2',
+                porcelain: '#ffffff',
+                espresso: '#2b2620',
+                mocha: '#8c8175',
+                gold: '#a8875a',
+                golddark: '#8c6f46',
+                hair: '#e8e1d6',
                 // Warm oak / walnut wood scale
                 wood: {
                     50: '#faf6f0',
