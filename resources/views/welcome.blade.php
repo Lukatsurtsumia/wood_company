@@ -73,15 +73,15 @@
             x-data="{ scrolled:false, mobile:false }"
             @scroll.window="scrolled = window.scrollY > 30"
             class="fixed inset-x-0 top-0 z-50 transition-all duration-500"
-            :class="scrolled ? 'bg-ivory/90 backdrop-blur border-b border-hair' : ''"
+            :class="scrolled ? 'bg-ivory/90 backdrop-blur border-b border-hair' : 'bg-gradient-to-b from-espresso/75 via-espresso/35 to-transparent'"
         >
             <div class="mx-auto max-w-6xl px-6 lg:px-8">
                 <div class="flex h-20 items-center justify-between">
-                    <a href="#top" class="font-serif text-2xl font-semibold tracking-tight transition-colors" :class="scrolled ? 'text-espresso' : 'text-ivory'">{{ $brand }}</a>
+                    <a href="#top" class="font-serif text-2xl font-semibold tracking-tight transition-colors" :class="scrolled ? 'text-espresso drop-shadow-none' : 'text-ivory [text-shadow:0_1px_6px_rgba(0,0,0,0.45)]'">{{ $brand }}</a>
 
-                    <nav class="hidden items-center gap-10 md:flex">
+                    <nav class="hidden items-center gap-10 md:flex" :class="scrolled ? '' : '[&_a]:[text-shadow:0_1px_6px_rgba(0,0,0,0.5)]'">
                         @foreach ($nav as $label => $href)
-                            <a href="{{ $href }}" class="text-xs font-medium uppercase tracking-[0.2em] transition-colors" :class="scrolled ? 'text-mocha hover:text-espresso' : 'text-ivory/80 hover:text-ivory'">{{ $label }}</a>
+                            <a href="{{ $href }}" class="text-xs font-medium uppercase tracking-[0.2em] transition-colors" :class="scrolled ? 'text-mocha hover:text-espresso' : 'text-ivory hover:text-white'">{{ $label }}</a>
                         @endforeach
                         <a href="#contact" class="text-xs font-medium uppercase tracking-[0.2em] transition-colors" :class="scrolled ? 'text-gold hover:text-golddark' : 'text-gold hover:text-ivory'">Enquire</a>
                     </nav>
