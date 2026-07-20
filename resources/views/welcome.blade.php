@@ -19,27 +19,39 @@
         '1516650556972-e9904734f467', // wood table in a bright room
     ];
 
-    // COLLECTION: a curated selection of your real finished pieces (kept to a
-    // tidy 9 so the page stays compact). Edit titles/materials to taste.
-    $projects = [
-        ['img' => '/images/wood-31.jpg', 'title' => 'Ornate Panelled Doors',  'meta' => 'Restored oak'],
-        ['img' => '/images/wood-25.jpg', 'title' => 'Carved Wall Mirror',     'meta' => 'Gilt & hardwood'],
-        ['img' => '/images/wood-34.jpg', 'title' => 'Gilded Carved Panel',    'meta' => 'Gold-leaf detail'],
-        ['img' => '/images/wood-27.jpg', 'title' => 'Marble-Top Sideboard',   'meta' => 'Restored antique'],
-        ['img' => '/images/wood-28.jpg', 'title' => 'Carved Bar Cabinet',     'meta' => 'Solid oak'],
-        ['img' => '/images/wood-13.jpg', 'title' => 'Live-Edge Dining Table', 'meta' => 'Solid ash'],
-        ['img' => '/images/wood-22.jpg', 'title' => 'Dining Table & Stools',  'meta' => 'Stained pine'],
-        ['img' => '/images/wood-26.jpg', 'title' => 'Corner Shelving',        'meta' => 'Solid oak'],
-        ['img' => '/images/wood-19.jpg', 'title' => 'Rustic Bench & Stool',   'meta' => 'Solid pine'],
-    ];
+    // ── GALLERY (folder-driven) ──────────────────────────────────────────
+    // Every image in public/images/gallery/ is shown automatically.
+    // To add a piece: drop a photo into that folder — nothing else to edit.
+    $gallery = collect(glob(public_path('images/gallery/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG}'), GLOB_BRACE))
+        ->sort(SORT_NATURAL)
+        ->map(fn ($p) => '/images/gallery/'.basename($p))
+        ->values();
 
-    // BEFORE & AFTER: drag the slider on each. Each pair is the SAME piece
-    // photographed before and after. 'aspect' controls the slider shape.
-    $beforeAfter = [
-        ['before' => '/images/wood-24.jpg', 'after' => '/images/wood-23.jpg', 'aspect' => 'aspect-[3/4]', 'title' => 'Restored Panelled Door', 'blurb' => 'An old door stripped back to bare timber, repaired and repainted to a smooth, even finish.'],
-        ['before' => '/images/wood-05.jpg', 'after' => '/images/wood-07.jpg', 'aspect' => 'aspect-[4/3]', 'title' => 'Live-Edge Dining Table', 'blurb' => 'A rough hardwood slab, planed, jointed and finished into a dining table on hand-welded steel legs.'],
-        ['before' => '/images/wood-03.jpg', 'after' => '/images/wood-04.jpg', 'aspect' => 'aspect-[3/4]', 'title' => 'Restored Cabinet',       'blurb' => 'A tired carcass stripped, repaired and French-polished back to life.'],
-    ];
+    // ── BEFORE & AFTER (folder-driven) ───────────────────────────────────
+    // Drop matching pairs in public/images/before-after/ named:
+    //   <sort>-<name>__before.jpg   and   <sort>-<name>__after.jpg
+    // e.g. 4-oak-console__before.jpg / 4-oak-console__after.jpg
+    $beforeAfter = collect(glob(public_path('images/before-after/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG}'), GLOB_BRACE))
+        ->reduce(function ($pairs, $p) {
+            $base = basename($p);
+            if (preg_match('/^(.*)__(before|after)\.[A-Za-z]+$/', $base, $m)) {
+                $pairs[$m[1]][$m[2]] = '/images/before-after/'.$base;
+            }
+            return $pairs;
+        }, []);
+    ksort($beforeAfter, SORT_NATURAL);
+    $beforeAfter = collect($beforeAfter)
+        ->filter(fn ($p) => isset($p['before'], $p['after']))
+        ->map(function ($p, $key) {
+            $dims = @getimagesize(public_path(ltrim($p['after'], '/'))) ?: [4, 3];
+            return [
+                'before' => $p['before'],
+                'after'  => $p['after'],
+                'title'  => \Illuminate\Support\Str::title(str_replace('-', ' ', preg_replace('/^\d+-/', '', $key))),
+                'aspect' => $dims[1] >= $dims[0] ? 'aspect-[3/4]' : 'aspect-[4/3]',
+            ];
+        })
+        ->values();
 
     $nav = ['Work' => '#work', 'Before & After' => '#restoration', 'Studio' => '#about', 'Contact' => '#contact'];
 @endphp
@@ -166,21 +178,16 @@
                 <div class="reveal mx-auto mb-16 max-w-2xl text-center">
                     <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-gold">Selected Work</p>
                     <h2 class="font-serif text-4xl font-medium text-espresso sm:text-5xl">The Collection</h2>
-                    <p class="mt-5 text-lg leading-relaxed text-mocha">From bespoke builds to fine antique restoration — a selection of recent work, each piece finished by hand.</p>
+                    <p class="mt-5 text-lg leading-relaxed text-mocha">From bespoke builds to fine antique restoration — a gallery of recent work, each piece made or restored by hand.</p>
                 </div>
 
-                <div class="grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-                    @foreach ($projects as $p)
-                        <figure class="group reveal">
-                            <div class="overflow-hidden rounded-sm bg-hair">
-                                <img src="{{ $p['img'] }}" alt="{{ $p['title'] }} — {{ $p['meta'] }}" loading="lazy"
-                                     class="aspect-[4/5] w-full object-cover transition duration-[1200ms] ease-out group-hover:scale-[1.05]">
-                            </div>
-                            <figcaption class="mt-5 text-center">
-                                <h3 class="font-serif text-2xl font-medium text-espresso">{{ $p['title'] }}</h3>
-                                <p class="mt-1 text-sm tracking-wide text-mocha">{{ $p['meta'] }}</p>
-                            </figcaption>
-                        </figure>
+                {{-- Masonry gallery — every image in public/images/gallery/ appears here automatically --}}
+                <div class="columns-1 gap-5 [column-fill:balance] sm:columns-2 lg:columns-3 xl:columns-4">
+                    @foreach ($gallery as $img)
+                        <div class="group mb-5 break-inside-avoid overflow-hidden rounded-sm bg-hair">
+                            <img src="{{ $img }}" alt="Handmade woodwork by {{ $name }}" loading="lazy"
+                                 class="w-full transition duration-[1200ms] ease-out group-hover:scale-[1.04]">
+                        </div>
                     @endforeach
                 </div>
             </div>
@@ -229,7 +236,7 @@
                             <div>
                                 <p class="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-gold">0{{ $i + 1 }} — Restoration</p>
                                 <h3 class="font-serif text-3xl font-medium text-espresso sm:text-4xl">{{ $ba['title'] }}</h3>
-                                <p class="mt-4 leading-relaxed text-mocha">{{ $ba['blurb'] }}</p>
+                                <p class="mt-4 leading-relaxed text-mocha">Stripped back, repaired and refinished by hand — drag the handle to reveal the transformation.</p>
                             </div>
                         </div>
                     @endforeach
