@@ -10,7 +10,12 @@
     // Sized Unsplash image URL helper — swap ids for your own project photos.
     $u = fn (string $id, int $w, int $h) => "https://images.unsplash.com/photo-{$id}?auto=format&fit=crop&q=80&w={$w}&h={$h}";
 
-    $heroImg = '1653971858625-9cb23d0dca80'; // oak sideboard, bright & airy
+    // Big, attractive hero images that cross-fade behind the headline.
+    $heroSlides = [
+        '1732801134112-23827e7cbd0d', // gallery of handmade chairs
+        '1653971858625-9cb23d0dca80', // oak sideboard, bright room
+        '1712171984530-e25a4aaa46dd', // finishing a piece by hand
+    ];
 
     $projects = [
         ['id' => '1611486212557-88be5ff6f941', 'title' => 'Oak Bedside Table',   'meta' => 'English Oak · 2024'],
@@ -61,16 +66,16 @@
         >
             <div class="mx-auto max-w-6xl px-6 lg:px-8">
                 <div class="flex h-20 items-center justify-between">
-                    <a href="#top" class="font-serif text-2xl font-semibold tracking-tight text-espresso">{{ $brand }}</a>
+                    <a href="#top" class="font-serif text-2xl font-semibold tracking-tight transition-colors" :class="scrolled ? 'text-espresso' : 'text-ivory'">{{ $brand }}</a>
 
                     <nav class="hidden items-center gap-10 md:flex">
                         @foreach ($nav as $label => $href)
-                            <a href="{{ $href }}" class="text-xs font-medium uppercase tracking-[0.2em] text-mocha transition hover:text-espresso">{{ $label }}</a>
+                            <a href="{{ $href }}" class="text-xs font-medium uppercase tracking-[0.2em] transition-colors" :class="scrolled ? 'text-mocha hover:text-espresso' : 'text-ivory/80 hover:text-ivory'">{{ $label }}</a>
                         @endforeach
-                        <a href="#contact" class="text-xs font-medium uppercase tracking-[0.2em] text-gold transition hover:text-golddark">Enquire</a>
+                        <a href="#contact" class="text-xs font-medium uppercase tracking-[0.2em] transition-colors" :class="scrolled ? 'text-gold hover:text-golddark' : 'text-gold hover:text-ivory'">Enquire</a>
                     </nav>
 
-                    <button @click="mobile=!mobile" class="text-espresso md:hidden" aria-label="Menu" :aria-expanded="mobile.toString()">
+                    <button @click="mobile=!mobile" class="transition-colors md:hidden" :class="scrolled ? 'text-espresso' : 'text-ivory'" aria-label="Menu" :aria-expanded="mobile.toString()">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                             <path x-show="!mobile" stroke-linecap="round" d="M4 8h16M4 16h16" />
                             <path x-show="mobile" x-cloak stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
@@ -87,29 +92,55 @@
             </div>
         </header>
 
-        {{-- ───────────────────────── Hero ───────────────────────── --}}
-        <section id="top" class="bg-ivory">
-            <div class="mx-auto max-w-3xl px-6 pb-14 pt-36 text-center lg:pt-44">
+        {{-- ───────────────────────── Hero slideshow ───────────────────────── --}}
+        <section id="top"
+            x-data="{
+                active: 0,
+                total: {{ count($heroSlides) }},
+                timer: null,
+                start(){ this.timer = setInterval(() => this.next(), 6000); },
+                next(){ this.active = (this.active + 1) % this.total; },
+                go(i){ this.active = i; clearInterval(this.timer); this.start(); }
+            }"
+            x-init="start()"
+            class="relative h-screen min-h-[600px] w-full overflow-hidden bg-espresso">
+
+            @foreach ($heroSlides as $i => $sid)
+                <div x-show="active === {{ $i }}"
+                     x-transition:enter="transition ease-out duration-[1400ms]"
+                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                     x-transition:leave="transition ease-in duration-[1400ms]"
+                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                     class="absolute inset-0">
+                    <img src="{{ $u($sid, 1920, 1080) }}" alt="" @if($i === 0) fetchpriority="high" @else loading="lazy" @endif
+                         class="h-full w-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-espresso/85 via-espresso/45 to-espresso/40"></div>
+                </div>
+            @endforeach
+
+            <div class="relative z-10 mx-auto flex h-full max-w-4xl flex-col items-center justify-center px-6 text-center lg:px-8">
                 <p class="mb-6 text-xs font-medium uppercase tracking-[0.35em] text-gold">Bespoke Furniture · Est. 2010</p>
-                <h1 class="font-serif text-5xl font-medium leading-[1.05] text-espresso sm:text-7xl">
+                <h1 class="font-serif text-5xl font-medium leading-[1.05] text-ivory drop-shadow sm:text-7xl">
                     Furniture, made to<br>last a lifetime.
                 </h1>
-                <p class="mx-auto mt-7 max-w-xl text-lg leading-relaxed text-mocha">
+                <p class="mx-auto mt-7 max-w-xl text-lg leading-relaxed text-ivory/85">
                     I'm {{ $name }} — a {{ strtolower($role) }} in {{ $location }}, crafting heirloom pieces by hand, from a single sketch to the final coat of oil.
                 </p>
                 <div class="mt-9 flex items-center justify-center gap-8">
-                    <a href="#work" class="rounded-full border border-espresso/25 px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-espresso transition hover:bg-espresso hover:text-ivory">
+                    <a href="#work" class="rounded-full border border-ivory/50 px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-ivory transition hover:bg-ivory hover:text-espresso">
                         View the Collection
                     </a>
-                    <a href="#contact" class="text-xs font-semibold uppercase tracking-[0.2em] text-gold underline-offset-8 transition hover:text-golddark hover:underline">Enquire</a>
+                    <a href="#contact" class="text-xs font-semibold uppercase tracking-[0.2em] text-ivory underline-offset-8 transition hover:underline">Enquire</a>
                 </div>
             </div>
 
-            <div class="mx-auto max-w-6xl px-6 pb-24 lg:px-8">
-                <div class="overflow-hidden rounded-sm">
-                    <img src="{{ $u($heroImg, 1600, 900) }}" alt="A handmade oak sideboard in a bright, calm interior" fetchpriority="high"
-                         class="aspect-[16/9] w-full object-cover">
-                </div>
+            {{-- slide dots --}}
+            <div class="absolute inset-x-0 bottom-10 z-10 flex justify-center gap-3">
+                @foreach ($heroSlides as $i => $sid)
+                    <button @click="go({{ $i }})" aria-label="Go to slide {{ $i + 1 }}"
+                            class="h-1.5 rounded-full transition-all duration-300"
+                            :class="active === {{ $i }} ? 'w-8 bg-gold' : 'w-4 bg-ivory/50 hover:bg-ivory/80'"></button>
+                @endforeach
             </div>
         </section>
 
