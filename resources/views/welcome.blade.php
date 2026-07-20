@@ -191,10 +191,10 @@
                     <p class="mt-5 text-lg leading-relaxed text-mocha">Drag the handle to see each piece transformed — from raw timber and tired carcasses to finished, heirloom furniture.</p>
                 </div>
 
-                <div class="space-y-16 lg:space-y-24">
+                <div class="space-y-12 lg:space-y-16">
                     @foreach ($beforeAfter as $i => $ba)
-                        <div class="reveal grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-14 {{ $i % 2 ? 'lg:[&>figure]:order-2' : '' }}">
-                            <figure class="lg:col-span-7">
+                        <div class="reveal grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12 {{ $i % 2 ? 'lg:[&>figure]:order-2' : '' }}">
+                            <figure>
                                 <div x-data="{
                                         pos: 50, drag: false,
                                         move(e){ const r = this.$el.getBoundingClientRect(); const x = (e.touches ? e.touches[0].clientX : e.clientX); this.pos = Math.min(100, Math.max(0, ((x - r.left) / r.width) * 100)); }
@@ -202,7 +202,7 @@
                                      @pointerdown="drag = true; move($event)"
                                      @pointermove="drag && move($event)"
                                      @pointerup.window="drag = false"
-                                     class="group relative {{ $ba['aspect'] ?? 'aspect-[4/3]' }} w-full cursor-ew-resize touch-none select-none overflow-hidden rounded-sm bg-hair">
+                                     class="group relative {{ $ba['aspect'] ?? 'aspect-[4/3]' }} mx-auto w-full max-w-sm cursor-ew-resize touch-none select-none overflow-hidden rounded-sm bg-hair">
                                     {{-- After (full) --}}
                                     <img src="{{ $ba['after'] }}" alt="{{ $ba['title'] }} — after" draggable="false"
                                          class="pointer-events-none absolute inset-0 h-full w-full object-cover" loading="lazy">
@@ -222,7 +222,7 @@
                                     </div>
                                 </div>
                             </figure>
-                            <div class="lg:col-span-5">
+                            <div>
                                 <p class="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-gold">0{{ $i + 1 }} — Restoration</p>
                                 <h3 class="font-serif text-3xl font-medium text-espresso sm:text-4xl">{{ $ba['title'] }}</h3>
                                 <p class="mt-4 leading-relaxed text-mocha">{{ $ba['blurb'] }}</p>
