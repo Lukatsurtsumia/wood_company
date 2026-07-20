@@ -244,9 +244,9 @@
                     <p class="mt-5 text-lg leading-relaxed text-mocha">Drag the handle to see each piece transformed — from raw timber and tired carcasses to finished, heirloom furniture.</p>
                 </div>
 
-                <div class="space-y-12 lg:space-y-16">
+                <div class="grid grid-cols-1 gap-x-10 gap-y-14 sm:grid-cols-2">
                     @foreach ($beforeAfter as $i => $ba)
-                        <div class="reveal grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12 {{ $i % 2 ? 'lg:[&>figure]:order-2' : '' }}">
+                        <div class="reveal">
                             <figure>
                                 <div x-data="{
                                         pos: 50, drag: false,
@@ -275,11 +275,11 @@
                                     </div>
                                 </div>
                             </figure>
-                            <div>
-                                <p class="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-gold">0{{ $i + 1 }} — Restoration</p>
-                                <h3 class="font-serif text-3xl font-medium text-espresso sm:text-4xl">{{ $ba['title'] }}</h3>
-                                <p class="mt-4 leading-relaxed text-mocha">Stripped back, repaired and refinished by hand — drag the handle to reveal the transformation.</p>
-                            </div>
+                            <figcaption class="mt-5 text-center">
+                                <p class="mb-1.5 text-xs font-medium uppercase tracking-[0.3em] text-gold">0{{ $i + 1 }} — Restoration</p>
+                                <h3 class="font-serif text-2xl font-medium text-espresso">{{ $ba['title'] }}</h3>
+                                <p class="mt-1.5 text-sm text-mocha">Drag the handle to reveal the transformation.</p>
+                            </figcaption>
                         </div>
                     @endforeach
                 </div>
