@@ -7,28 +7,37 @@
     $phone    = '+44 7700 900123';
     $location = 'Brighton, United Kingdom';
 
-    // Real workshop photos live in public/images (wood-XX.jpg).
-    // The About portrait uses /images/wood-14.jpg (the maker at work).
+    // The About portrait uses a real photo (the maker at work).
     $aboutImg = '/images/wood-14.jpg';
 
-    // Big hero images that cross-fade behind the headline.
+    // HERO: professional woodworking stock photos (Unsplash CDN) for a
+    // polished first impression. Real work is shown further down.
+    $u = fn (string $id, int $w, int $h) => "https://images.unsplash.com/photo-{$id}?auto=format&fit=crop&q=80&w={$w}&h={$h}";
     $heroSlides = [
-        '/images/wood-07.jpg', // live-edge table, black legs
-        '/images/wood-13.jpg', // glossy live-edge table top
-        '/images/wood-04.jpg', // ornate polished cabinet
+        '1712171984530-e25a4aaa46dd', // finishing a wood surface (warm)
+        '1487015307662-6ce6210680f1', // solid-wood round table
+        '1516650556972-e9904734f467', // wood table in a bright room
     ];
 
-    // Edit the titles/materials below to match each real piece.
+    // COLLECTION: your real finished pieces. Edit titles/materials to taste.
     $projects = [
-        ['img' => '/images/wood-17.jpg', 'title' => 'Live-Edge Dining Table', 'meta' => 'Solid Ash'],
-        ['img' => '/images/wood-03.jpg', 'title' => 'Carved Display Cabinet', 'meta' => 'Hand-carved hardwood'],
-        ['img' => '/images/wood-09.jpg', 'title' => 'Panelled Doors',         'meta' => 'Solid Oak'],
-        ['img' => '/images/wood-19.jpg', 'title' => 'Rustic Bench Set',       'meta' => 'Reclaimed timber'],
-        ['img' => '/images/wood-21.jpg', 'title' => 'Log Side Table',         'meta' => 'Solid log'],
-        ['img' => '/images/wood-20.jpg', 'title' => 'Hand-Carved Panel',      'meta' => 'Relief carving'],
+        ['img' => '/images/wood-13.jpg', 'title' => 'Live-Edge Dining Table', 'meta' => 'Solid Ash'],
+        ['img' => '/images/wood-19.jpg', 'title' => 'Rustic Bench Set',        'meta' => 'Reclaimed timber'],
+        ['img' => '/images/wood-21.jpg', 'title' => 'Log Side Table',          'meta' => 'Solid log'],
+        ['img' => '/images/wood-20.jpg', 'title' => 'Hand-Carved Panel',       'meta' => 'Relief carving'],
+        ['img' => '/images/wood-18.jpg', 'title' => 'Live-Edge Serving Board', 'meta' => 'Olive & resin'],
+        ['img' => '/images/wood-15.jpg', 'title' => 'Fitted Wall Shelf',       'meta' => 'Solid oak'],
     ];
 
-    $nav = ['Work' => '#work', 'Studio' => '#about', 'Contact' => '#contact'];
+    // BEFORE & AFTER: drag the slider on each. IMPORTANT — set each pair to
+    // the SAME piece photographed before and after, so it's honest.
+    $beforeAfter = [
+        ['before' => '/images/wood-05.jpg', 'after' => '/images/wood-07.jpg', 'title' => 'Live-Edge Dining Table', 'blurb' => 'A rough hardwood slab, planed, jointed and finished into a dining table on hand-welded steel legs.'],
+        ['before' => '/images/wood-08.jpg', 'after' => '/images/wood-09.jpg', 'title' => 'Panelled Doors',         'blurb' => 'Raw carved panels brought to a deep, hand-rubbed finish.'],
+        ['before' => '/images/wood-03.jpg', 'after' => '/images/wood-04.jpg', 'title' => 'Restored Cabinet',       'blurb' => 'A tired carcass stripped, repaired and French-polished back to life.'],
+    ];
+
+    $nav = ['Work' => '#work', 'Before & After' => '#restoration', 'Studio' => '#about', 'Contact' => '#contact'];
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
@@ -40,6 +49,7 @@
         <meta name="description" content="{{ $name }} — {{ $role }}. Bespoke handmade furniture and joinery. Available for commissions.">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
+        <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
         <link href="https://fonts.bunny.net/css?family=cormorant-garamond:400,500,600,500i,600i|figtree:400,500,600&display=swap" rel="stylesheet" />
 
         @livewireStyles
@@ -113,9 +123,9 @@
                      x-transition:leave="transition ease-in duration-[1400ms]"
                      x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                      class="absolute inset-0">
-                    <img src="{{ $sid }}" alt="" @if($i === 0) fetchpriority="high" @else loading="lazy" @endif
+                    <img src="{{ $u($sid, 1920, 1080) }}" alt="" @if($i === 0) fetchpriority="high" @else loading="lazy" @endif
                          class="h-full w-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-espresso/85 via-espresso/45 to-espresso/40"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-espresso/85 via-espresso/40 to-espresso/25"></div>
                 </div>
             @endforeach
 
@@ -166,6 +176,57 @@
                                 <p class="mt-1 text-sm tracking-wide text-mocha">{{ $p['meta'] }}</p>
                             </figcaption>
                         </figure>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+
+        {{-- ───────────────────────── Before & After ───────────────────────── --}}
+        <section id="restoration" class="border-t border-hair bg-porcelain py-24 lg:py-32">
+            <div class="mx-auto max-w-6xl px-6 lg:px-8">
+                <div class="reveal mx-auto mb-16 max-w-2xl text-center">
+                    <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-gold">From Rough to Refined</p>
+                    <h2 class="font-serif text-4xl font-medium text-espresso sm:text-5xl">Before &amp; After</h2>
+                    <p class="mt-5 text-lg leading-relaxed text-mocha">Drag the handle to see each piece transformed — from raw timber and tired carcasses to finished, heirloom furniture.</p>
+                </div>
+
+                <div class="space-y-16 lg:space-y-24">
+                    @foreach ($beforeAfter as $i => $ba)
+                        <div class="reveal grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-14 {{ $i % 2 ? 'lg:[&>figure]:order-2' : '' }}">
+                            <figure class="lg:col-span-7">
+                                <div x-data="{
+                                        pos: 50, drag: false,
+                                        move(e){ const r = this.$el.getBoundingClientRect(); const x = (e.touches ? e.touches[0].clientX : e.clientX); this.pos = Math.min(100, Math.max(0, ((x - r.left) / r.width) * 100)); }
+                                     }"
+                                     @pointerdown="drag = true; move($event)"
+                                     @pointermove="drag && move($event)"
+                                     @pointerup.window="drag = false"
+                                     class="group relative aspect-[4/3] w-full cursor-ew-resize touch-none select-none overflow-hidden rounded-sm bg-hair">
+                                    {{-- After (full) --}}
+                                    <img src="{{ $ba['after'] }}" alt="{{ $ba['title'] }} — after" draggable="false"
+                                         class="pointer-events-none absolute inset-0 h-full w-full object-cover" loading="lazy">
+                                    <span class="pointer-events-none absolute right-4 top-4 rounded-full bg-espresso/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-ivory">After</span>
+                                    {{-- Before (clipped) --}}
+                                    <div class="pointer-events-none absolute inset-0" :style="`clip-path: inset(0 ${100 - pos}% 0 0)`">
+                                        <img src="{{ $ba['before'] }}" alt="{{ $ba['title'] }} — before" draggable="false"
+                                             class="absolute inset-0 h-full w-full object-cover" loading="lazy">
+                                        <span class="absolute left-4 top-4 rounded-full bg-espresso/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-ivory">Before</span>
+                                    </div>
+                                    {{-- Handle --}}
+                                    <div class="pointer-events-none absolute inset-y-0 z-10 flex w-0 items-center justify-center" :style="`left: ${pos}%`">
+                                        <div class="absolute inset-y-0 w-0.5 bg-ivory/90"></div>
+                                        <div class="flex h-11 w-11 items-center justify-center rounded-full border border-espresso/10 bg-ivory shadow-lg">
+                                            <svg class="h-5 w-5 text-espresso" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l-4 3 4 3M16 9l4 3-4 3"/></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </figure>
+                            <div class="lg:col-span-5">
+                                <p class="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-gold">0{{ $i + 1 }} — Restoration</p>
+                                <h3 class="font-serif text-3xl font-medium text-espresso sm:text-4xl">{{ $ba['title'] }}</h3>
+                                <p class="mt-4 leading-relaxed text-mocha">{{ $ba['blurb'] }}</p>
+                            </div>
+                        </div>
                     @endforeach
                 </div>
             </div>
