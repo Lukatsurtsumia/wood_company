@@ -1,49 +1,32 @@
 @php
     // ── Edit these to make the site your own ─────────────────────────────
-    $name    = 'James Wood';
-    $brand   = 'Wood Agency';
-    $role    = 'Master Woodworker & Furniture Maker';
-    $email   = 'hello@woodagency.test';
-    $phone   = '+44 7700 900123';
+    $name     = 'James Wood';
+    $brand    = 'Wood Agency';
+    $role     = 'Master Woodworker & Furniture Maker';
+    $email    = 'hello@woodagency.test';
+    $phone    = '+44 7700 900123';
     $location = 'Brighton, United Kingdom';
 
-    // Placeholder imagery is wood-themed (loremflickr). Swap the URLs for your
-    // own photos — e.g. drop files in public/images and use /images/your.jpg
-    // Placeholder art is procedurally generated wood grain (public/images/*.svg)
-    // so nothing loads off-site. Swap 'img' for your own photos when ready.
+    // Helper to build a sized Unsplash image URL. Swap these for your own
+    // project photos anytime (drop files in public/images and use /images/x.jpg).
+    $u = fn (string $id, int $w, int $h) => "https://images.unsplash.com/photo-{$id}?auto=format&fit=crop&q=80&w={$w}&h={$h}";
+
     $slides = [
-        [
-            'img'     => '/images/wood-oak.svg',
-            'eyebrow' => 'Handmade in Britain',
-            'title'   => 'Furniture that lasts generations',
-            'text'    => 'Bespoke pieces shaped by hand from responsibly sourced hardwood.',
-        ],
-        [
-            'img'     => '/images/wood-walnut.svg',
-            'eyebrow' => 'From sketch to finish',
-            'title'   => 'A craft honed over 15 years',
-            'text'    => 'Every joint cut with intention. Every surface finished by hand.',
-        ],
-        [
-            'img'     => '/images/wood-mahogany.svg',
-            'eyebrow' => 'Available for commissions',
-            'title'   => "Let's build something remarkable",
-            'text'    => 'Kitchens, staircases, tables and one-off commissions.',
-        ],
+        ['id' => '1732801134112-23827e7cbd0d', 'eyebrow' => 'Handmade in Britain',        'title' => 'Furniture that lasts generations', 'text' => 'Bespoke pieces shaped by hand from responsibly sourced hardwood.'],
+        ['id' => '1487015307662-6ce6210680f1', 'eyebrow' => 'From sketch to finish',        'title' => 'A craft honed over 15 years',      'text' => 'Every joint cut with intention. Every surface finished by hand.'],
+        ['id' => '1712171984530-e25a4aaa46dd', 'eyebrow' => 'Available for commissions',    'title' => "Let's build something remarkable", 'text' => 'Kitchens, staircases, tables and one-off commissions.'],
     ];
 
     $projects = [
-        ['img' => '/images/wood-oak.svg',      'title' => 'Live-Edge Dining Table', 'cat' => 'Furniture',     'meta' => 'English Oak · 2024'],
-        ['img' => '/images/wood-walnut.svg',   'title' => 'Solid Oak Kitchen',      'cat' => 'Joinery',       'meta' => 'Oak & Brass · 2024'],
-        ['img' => '/images/wood-mahogany.svg', 'title' => 'Floating Staircase',     'cat' => 'Architectural', 'meta' => 'Ash & Steel · 2023'],
-        ['img' => '/images/wood-walnut.svg',   'title' => 'Steam-Bent Chair',       'cat' => 'Furniture',     'meta' => 'Walnut · 2023'],
-        ['img' => '/images/wood-mahogany.svg', 'title' => 'Walnut Writing Desk',    'cat' => 'Furniture',     'meta' => 'Black Walnut · 2023'],
-        ['img' => '/images/wood-oak.svg',      'title' => 'Library Shelving',       'cat' => 'Joinery',       'meta' => 'Oak · 2022'],
+        ['id' => '1611486212557-88be5ff6f941', 'title' => 'Oak Bedside Table',  'cat' => 'Furniture',   'meta' => 'English Oak · 2024'],
+        ['id' => '1611486212355-d276af4581c0', 'title' => 'Nesting Side Tables', 'cat' => 'Furniture',   'meta' => 'Black Walnut · 2024'],
+        ['id' => '1653971858625-9cb23d0dca80', 'title' => 'Oak Sideboard',      'cat' => 'Joinery',     'meta' => 'Oak & Brass · 2023'],
+        ['id' => '1611269154421-4e27233ac5c7', 'title' => 'Writing Desk',       'cat' => 'Furniture',   'meta' => 'Ash & Steel · 2023'],
+        ['id' => '1516650556972-e9904734f467', 'title' => 'Round Dining Table', 'cat' => 'Furniture',   'meta' => 'Solid Oak · 2023'],
+        ['id' => '1544691560-fc2053d97726',    'title' => 'Restored Dresser',   'cat' => 'Restoration', 'meta' => 'Mahogany · 2022'],
     ];
 
     $nav = ['Work' => '#work', 'About' => '#about', 'Contact' => '#contact'];
-
-    $initials = collect(explode(' ', $name))->map(fn ($w) => mb_substr($w, 0, 1))->take(2)->implode('');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
@@ -55,6 +38,7 @@
         <meta name="description" content="{{ $name }} — {{ $role }}. Bespoke handmade furniture and joinery. Available for commissions.">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
+        <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
         <link href="https://fonts.bunny.net/css?family=fraunces:400,500,600,700|figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
         @livewireStyles
@@ -63,39 +47,24 @@
         <style>
             [x-cloak]{ display:none !important; }
             body{ font-family:'Figtree', ui-sans-serif, system-ui, sans-serif; }
-            @keyframes kenburns{ from{ transform:scale(1);} to{ transform:scale(1.12);} }
+            @keyframes kenburns{ from{ transform:scale(1);} to{ transform:scale(1.10);} }
             .kenburns{ animation:kenburns 9s ease-out forwards; }
             section[id]{ scroll-margin-top:5rem; }
-
-            /* Layered wood-grain / plank texture for dark surfaces */
-            .wood-grain{
-                background-color:#2a1a12;
-                background-image:
-                    repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0 1px, transparent 1px 88px),
-                    repeating-linear-gradient(90deg, rgba(255,226,183,.045) 0 2px, transparent 2px 7px),
-                    repeating-linear-gradient(90deg, rgba(0,0,0,.12) 0 1px, transparent 1px 4px),
-                    linear-gradient(100deg, #241610, #3a2417 45%, #2a1a12);
-            }
-            /* Faint grain lines to lay over hero photos */
-            .grain-overlay{
-                background-image:repeating-linear-gradient(90deg, rgba(0,0,0,.10) 0 1px, transparent 1px 5px);
-                mix-blend-mode:multiply;
-            }
         </style>
     </head>
-    <body class="bg-wood-50 text-wood-900 antialiased selection:bg-brass-300 selection:text-wood-950">
+    <body class="bg-white text-wood-900 antialiased selection:bg-brass-300 selection:text-wood-950">
 
         {{-- ───────────────────────── Header ───────────────────────── --}}
         <header
             x-data="{ scrolled:false, mobile:false }"
             @scroll.window="scrolled = window.scrollY > 40"
             class="fixed inset-x-0 top-0 z-50 transition-colors duration-300"
-            :class="scrolled ? 'bg-wood-50/95 backdrop-blur border-b border-wood-200 shadow-sm' : 'bg-transparent'"
+            :class="scrolled ? 'bg-white/95 backdrop-blur border-b border-wood-100 shadow-sm' : 'bg-transparent'"
         >
             <div class="mx-auto max-w-7xl px-6 lg:px-8">
                 <div class="flex h-20 items-center justify-between">
                     <a href="#top" class="flex items-center gap-2.5 font-display text-xl font-semibold"
-                       :class="scrolled ? 'text-wood-900' : 'text-wood-50'">
+                       :class="scrolled ? 'text-wood-900' : 'text-white'">
                         <svg class="h-7 w-7 text-brass-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9-4 9 4-9 4-9-4zm0 0v10l9 4 9-4V7" />
                         </svg>
@@ -105,15 +74,15 @@
                     <nav class="hidden items-center gap-9 md:flex">
                         @foreach ($nav as $label => $href)
                             <a href="{{ $href }}" class="text-sm font-medium tracking-wide transition hover:text-brass-500"
-                               :class="scrolled ? 'text-wood-600' : 'text-wood-100'">{{ $label }}</a>
+                               :class="scrolled ? 'text-wood-600' : 'text-white/90'">{{ $label }}</a>
                         @endforeach
                         <a href="#contact"
-                           class="rounded-full bg-wood-700 px-5 py-2.5 text-sm font-semibold text-wood-50 shadow-sm ring-1 ring-inset ring-white/10 transition hover:bg-wood-800">
+                           class="rounded-full bg-wood-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-wood-900">
                             Hire me
                         </a>
                     </nav>
 
-                    <button @click="mobile = !mobile" class="md:hidden" :class="scrolled ? 'text-wood-900' : 'text-wood-50'" aria-label="Menu" aria-expanded="false" :aria-expanded="mobile.toString()">
+                    <button @click="mobile = !mobile" class="md:hidden" :class="scrolled ? 'text-wood-900' : 'text-white'" aria-label="Menu" :aria-expanded="mobile.toString()">
                         <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                             <path x-show="!mobile" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" />
                             <path x-show="mobile" x-cloak stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
@@ -122,13 +91,12 @@
                 </div>
             </div>
 
-            {{-- Mobile menu --}}
-            <div x-show="mobile" x-cloak x-transition class="border-t border-wood-200 bg-wood-50 md:hidden">
+            <div x-show="mobile" x-cloak x-transition class="border-t border-wood-100 bg-white md:hidden">
                 <nav class="space-y-1 px-6 py-4">
                     @foreach ($nav as $label => $href)
                         <a href="{{ $href }}" @click="mobile=false" class="block py-2 text-wood-700 hover:text-brass-600">{{ $label }}</a>
                     @endforeach
-                    <a href="#contact" @click="mobile=false" class="mt-2 block rounded-full bg-wood-700 px-5 py-2.5 text-center font-semibold text-wood-50">Hire me</a>
+                    <a href="#contact" @click="mobile=false" class="mt-2 block rounded-full bg-wood-800 px-5 py-2.5 text-center font-semibold text-white">Hire me</a>
                 </nav>
             </div>
         </header>
@@ -145,7 +113,7 @@
                 go(i){ this.active = i; clearInterval(this.timer); this.start(); }
             }"
             x-init="start()"
-            class="relative h-screen min-h-[620px] w-full overflow-hidden bg-wood-950"
+            class="relative h-screen min-h-[600px] w-full overflow-hidden bg-wood-900"
         >
             @foreach ($slides as $i => $slide)
                 <div x-show="active === {{ $i }}"
@@ -154,15 +122,12 @@
                      x-transition:leave="transition ease-in duration-1000"
                      x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                      class="absolute inset-0">
-                    <div class="absolute inset-0 bg-cover bg-center kenburns"
-                         style="background-image:url('{{ $slide['img'] }}')"></div>
-                    {{-- Warm wood-toned vignette + grain --}}
-                    <div class="absolute inset-0 bg-gradient-to-t from-wood-950/92 via-wood-900/60 to-wood-950/40"></div>
-                    <div class="absolute inset-0 opacity-60 grain-overlay"></div>
+                    <img src="{{ $u($slide['id'], 1920, 1080) }}" alt="" @if($i === 0) fetchpriority="high" @else loading="lazy" @endif
+                         class="absolute inset-0 h-full w-full object-cover kenburns">
+                    <div class="absolute inset-0 bg-gradient-to-t from-wood-950/85 via-wood-950/45 to-wood-950/25"></div>
                 </div>
             @endforeach
 
-            {{-- Slide copy --}}
             <div class="relative z-10 mx-auto flex h-full max-w-7xl items-center px-6 lg:px-8">
                 <div class="max-w-2xl">
                     @foreach ($slides as $i => $slide)
@@ -172,32 +137,31 @@
                             <p class="mb-4 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.25em] text-brass-400">
                                 <span class="h-px w-8 bg-brass-400"></span>{{ $slide['eyebrow'] }}
                             </p>
-                            <h1 class="font-display text-4xl font-semibold leading-tight text-wood-50 sm:text-6xl">{{ $slide['title'] }}</h1>
-                            <p class="mt-6 max-w-xl text-lg text-wood-100/90">{{ $slide['text'] }}</p>
+                            <h1 class="font-display text-4xl font-semibold leading-[1.1] text-white sm:text-6xl">{{ $slide['title'] }}</h1>
+                            <p class="mt-6 max-w-xl text-lg text-white/85">{{ $slide['text'] }}</p>
                         </div>
                     @endforeach
 
                     <div class="mt-10 flex flex-wrap items-center gap-4">
                         <a href="#work" class="rounded-full bg-brass-500 px-7 py-3.5 text-sm font-semibold text-wood-950 shadow-lg transition hover:bg-brass-400">View my work</a>
-                        <a href="#contact" class="rounded-full border border-wood-100/40 px-7 py-3.5 text-sm font-semibold text-wood-50 transition hover:bg-wood-50/10">Start a project</a>
+                        <a href="#contact" class="rounded-full border border-white/40 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10">Start a project</a>
                     </div>
                 </div>
             </div>
 
-            {{-- Controls --}}
             <div class="absolute inset-x-0 bottom-8 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-8">
                 <div class="flex gap-2.5">
                     @foreach ($slides as $i => $slide)
                         <button @click="go({{ $i }})" aria-label="Go to slide {{ $i + 1 }}"
                                 class="h-1.5 rounded-full transition-all duration-300"
-                                :class="active === {{ $i }} ? 'w-8 bg-brass-400' : 'w-4 bg-wood-50/50 hover:bg-wood-50/80'"></button>
+                                :class="active === {{ $i }} ? 'w-8 bg-brass-400' : 'w-4 bg-white/50 hover:bg-white/80'"></button>
                     @endforeach
                 </div>
                 <div class="hidden gap-3 sm:flex">
-                    <button @click="prev()" class="flex h-11 w-11 items-center justify-center rounded-full border border-wood-100/30 text-wood-50 transition hover:bg-wood-50/10" aria-label="Previous slide">
+                    <button @click="prev()" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/30 text-white transition hover:bg-white/10" aria-label="Previous slide">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M15 19l-7-7 7-7"/></svg>
                     </button>
-                    <button @click="next()" class="flex h-11 w-11 items-center justify-center rounded-full border border-wood-100/30 text-wood-50 transition hover:bg-wood-50/10" aria-label="Next slide">
+                    <button @click="next()" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/30 text-white transition hover:bg-white/10" aria-label="Next slide">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M9 5l7 7-7 7"/></svg>
                     </button>
                 </div>
@@ -205,39 +169,24 @@
         </section>
 
         {{-- ───────────────────────── Work / Portfolio ───────────────────────── --}}
-        <section id="work" class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-            <div class="mb-14 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
-                <div>
-                    <p class="mb-3 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.2em] text-brass-600">
-                        <span class="h-px w-8 bg-brass-500"></span>Selected Work
-                    </p>
-                    <h2 class="font-display text-4xl font-semibold text-wood-900">Recent commissions</h2>
-                </div>
-                <p class="max-w-sm text-wood-600">A small selection of bespoke pieces made for homes and businesses across the UK.</p>
+        <section id="work" class="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-28">
+            <div class="mx-auto mb-16 max-w-2xl text-center">
+                <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-brass-600">Selected Work</p>
+                <h2 class="font-display text-4xl font-semibold text-wood-900">Recent commissions</h2>
+                <p class="mt-4 text-lg text-wood-500">A selection of bespoke pieces made for homes and businesses across the UK — each one designed, built and finished by hand.</p>
             </div>
 
-            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($projects as $p)
-                    <article class="group relative overflow-hidden rounded-2xl bg-wood-200 shadow-sm ring-1 ring-wood-900/5">
-                        <div class="aspect-[4/3] w-full overflow-hidden bg-wood-300">
-                            <img src="{{ $p['img'] }}" alt="{{ $p['title'] }} — {{ $p['meta'] }}" loading="lazy"
+                    <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-wood-900/5 transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+                        <div class="aspect-[4/3] w-full overflow-hidden bg-wood-100">
+                            <img src="{{ $u($p['id'], 800, 600) }}" alt="{{ $p['title'] }} — {{ $p['meta'] }}" loading="lazy"
                                  class="h-full w-full object-cover transition duration-700 group-hover:scale-105">
                         </div>
-                        {{-- Base gradient always present for legibility --}}
-                        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-wood-950/85 via-wood-950/10 to-transparent"></div>
-                        {{-- Hover detail overlay --}}
-                        <div class="pointer-events-none absolute inset-0 flex flex-col justify-end p-6">
-                            <p class="text-xs font-semibold uppercase tracking-wider text-brass-300">{{ $p['cat'] }}</p>
-                            <h3 class="mt-1 font-display text-xl font-medium text-wood-50">{{ $p['title'] }}</h3>
-                            <div class="grid grid-rows-[0fr] transition-all duration-500 group-hover:grid-rows-[1fr]">
-                                <div class="overflow-hidden">
-                                    <p class="pt-2 text-sm text-wood-100/80">{{ $p['meta'] }}</p>
-                                    <span class="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-brass-300">
-                                        View project
-                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
-                                    </span>
-                                </div>
-                            </div>
+                        <div class="p-5">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-brass-600">{{ $p['cat'] }}</p>
+                            <h3 class="mt-1 font-display text-lg font-medium text-wood-900">{{ $p['title'] }}</h3>
+                            <p class="mt-1 text-sm text-wood-500">{{ $p['meta'] }}</p>
                         </div>
                     </article>
                 @endforeach
@@ -245,52 +194,45 @@
         </section>
 
         {{-- ───────────────────────── About ───────────────────────── --}}
-        <section id="about" class="wood-grain text-wood-100">
-            <div class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 px-6 py-24 lg:grid-cols-2 lg:px-8">
+        <section id="about" class="bg-wood-50">
+            <div class="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 px-6 py-24 lg:grid-cols-2 lg:px-8 lg:py-28">
                 <div class="relative">
-                    <div class="relative aspect-[4/5] w-full overflow-hidden rounded-3xl shadow-2xl ring-1 ring-white/10"
-                         style="background-image:url('/images/wood-oak.svg'); background-size:cover; background-position:center;">
-                        {{-- Monogram placeholder — replace this block with a photo of yourself --}}
-                        <div class="absolute inset-0 bg-wood-950/35"></div>
-                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                            <span class="flex h-28 w-28 items-center justify-center rounded-full border-2 border-brass-400/70 font-display text-4xl font-semibold text-brass-300">{{ $initials }}</span>
-                            <p class="mt-4 text-sm uppercase tracking-[0.3em] text-wood-100/70">{{ $name }}</p>
-                        </div>
+                    <div class="overflow-hidden rounded-3xl shadow-xl ring-1 ring-wood-900/5">
+                        <img src="{{ $u('1679797850019-3d0d8659a695', 900, 1100) }}" alt="{{ $name }} at work in the workshop"
+                             class="aspect-[4/5] w-full object-cover" loading="lazy">
                     </div>
-                    <div class="absolute -bottom-6 -right-4 hidden rounded-2xl bg-brass-500 px-8 py-6 text-wood-950 shadow-xl sm:block">
-                        <p class="font-display text-4xl font-bold leading-none">15+</p>
-                        <p class="mt-1 text-sm font-medium">years at the bench</p>
+                    <div class="absolute -bottom-6 -right-4 hidden rounded-2xl bg-wood-800 px-8 py-6 text-white shadow-xl sm:block">
+                        <p class="font-display text-4xl font-bold leading-none text-brass-400">15+</p>
+                        <p class="mt-1 text-sm text-white/80">years at the bench</p>
                     </div>
                 </div>
 
                 <div>
-                    <p class="mb-3 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.2em] text-brass-400">
-                        <span class="h-px w-8 bg-brass-400"></span>About
-                    </p>
-                    <h2 class="font-display text-4xl font-semibold leading-tight text-wood-50">Hello, I'm {{ $name }}.</h2>
-                    <div class="mt-6 space-y-4 text-lg leading-relaxed text-wood-100/85">
+                    <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-brass-600">About</p>
+                    <h2 class="font-display text-4xl font-semibold leading-tight text-wood-900">Hello, I'm {{ $name }}.</h2>
+                    <div class="mt-6 space-y-4 text-lg leading-relaxed text-wood-600">
                         <p>I'm a {{ strtolower($role) }} working from a small workshop in {{ $location }}. For over fifteen years I've been shaping raw timber into furniture and joinery designed to be used, loved, and passed on.</p>
                         <p>I work closely with each client — from the first sketch to the final coat of oil — so every piece fits its home and its owner perfectly. No flat-packs, no shortcuts; just honest materials and traditional craft.</p>
                     </div>
 
-                    <div class="mt-8 grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
+                    <div class="mt-8 grid grid-cols-3 gap-6 border-t border-wood-200 pt-8">
                         <div>
-                            <p class="font-display text-3xl font-semibold text-brass-300">240+</p>
-                            <p class="text-sm text-wood-200/70">pieces made</p>
+                            <p class="font-display text-3xl font-semibold text-wood-900">240+</p>
+                            <p class="text-sm text-wood-500">pieces made</p>
                         </div>
                         <div>
-                            <p class="font-display text-3xl font-semibold text-brass-300">15</p>
-                            <p class="text-sm text-wood-200/70">years' craft</p>
+                            <p class="font-display text-3xl font-semibold text-wood-900">15</p>
+                            <p class="text-sm text-wood-500">years' craft</p>
                         </div>
                         <div>
-                            <p class="font-display text-3xl font-semibold text-brass-300">100%</p>
-                            <p class="text-sm text-wood-200/70">handmade</p>
+                            <p class="font-display text-3xl font-semibold text-wood-900">100%</p>
+                            <p class="text-sm text-wood-500">handmade</p>
                         </div>
                     </div>
 
                     <div class="mt-8 flex flex-wrap gap-2">
                         @foreach (['Bespoke Furniture', 'Kitchens', 'Staircases', 'French Polishing', 'Steam Bending', 'Restoration'] as $skill)
-                            <span class="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm text-wood-100">{{ $skill }}</span>
+                            <span class="rounded-full border border-wood-200 bg-white px-4 py-1.5 text-sm text-wood-600">{{ $skill }}</span>
                         @endforeach
                     </div>
                 </div>
@@ -298,12 +240,10 @@
         </section>
 
         {{-- ───────────────────────── Contact ───────────────────────── --}}
-        <section id="contact" class="mx-auto max-w-7xl px-6 py-24 lg:px-8">
+        <section id="contact" class="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-28">
             <div class="grid grid-cols-1 gap-14 lg:grid-cols-2">
                 <div>
-                    <p class="mb-3 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.2em] text-brass-600">
-                        <span class="h-px w-8 bg-brass-500"></span>Get in touch
-                    </p>
+                    <p class="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-brass-600">Get in touch</p>
                     <h2 class="font-display text-4xl font-semibold leading-tight text-wood-900">Have a project in mind?</h2>
                     <p class="mt-5 max-w-md text-lg text-wood-600">Tell me a little about what you'd like made and I'll get back to you with some initial thoughts and a rough estimate — usually within a day or two.</p>
 
@@ -338,18 +278,18 @@
                     </dl>
                 </div>
 
-                <div class="rounded-3xl border border-wood-200 bg-white p-8 shadow-sm">
+                <div class="rounded-3xl border border-wood-100 bg-wood-50 p-8 shadow-sm">
                     <livewire:contact-form />
                 </div>
             </div>
         </section>
 
         {{-- ───────────────────────── Footer ───────────────────────── --}}
-        <footer class="wood-grain text-wood-200">
+        <footer class="bg-wood-950 text-wood-200">
             <div class="mx-auto max-w-7xl px-6 py-14 lg:px-8">
                 <div class="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
                     <div>
-                        <a href="#top" class="flex items-center gap-2.5 font-display text-xl font-semibold text-wood-50">
+                        <a href="#top" class="flex items-center gap-2.5 font-display text-xl font-semibold text-white">
                             <svg class="h-7 w-7 text-brass-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9-4 9 4-9 4-9-4zm0 0v10l9 4 9-4V7"/></svg>
                             {{ $brand }}
                         </a>
@@ -371,7 +311,21 @@
                     </div>
                 </div>
 
-                <div class="mt-12 flex flex-col items-center justify-between gap-2 border-t border-white/10 pt-6 text-sm text-wood-400 sm:flex-row">
+                {{-- Built with Claude --}}
+                <div class="mt-12 flex flex-col items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-6 py-5 text-center sm:flex-row sm:justify-between sm:text-left">
+                    <div class="flex items-center gap-3">
+                        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brass-500/20 text-brass-300">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l1.9 4.9L19 9.8l-4.1 2 -0.9 5.2L12 13.6 9.9 17l-0.9-5.2L5 9.8l5.1-1.9L12 3z"/></svg>
+                        </span>
+                        <p class="text-sm text-wood-100">Curious how this site was made? It was designed &amp; built with <span class="font-semibold text-white">Claude</span> — no agency required.</p>
+                    </div>
+                    <a href="https://claude.ai" target="_blank" rel="noopener"
+                       class="shrink-0 rounded-full bg-white px-5 py-2 text-sm font-semibold text-wood-950 transition hover:bg-brass-300">
+                        Build yours with Claude →
+                    </a>
+                </div>
+
+                <div class="mt-8 flex flex-col items-center justify-between gap-2 border-t border-white/10 pt-6 text-sm text-wood-400 sm:flex-row">
                     <p>&copy; {{ date('Y') }} {{ $brand }}. All rights reserved.</p>
                     <p>Handmade with care in {{ $location }}.</p>
                 </div>
