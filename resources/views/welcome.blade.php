@@ -19,14 +19,18 @@
         '1516650556972-e9904734f467', // wood table in a bright room
     ];
 
-    // COLLECTION: your real finished pieces. Edit titles/materials to taste.
+    // COLLECTION: a curated selection of your real finished pieces (kept to a
+    // tidy 9 so the page stays compact). Edit titles/materials to taste.
     $projects = [
+        ['img' => '/images/wood-31.jpg', 'title' => 'Ornate Panelled Doors',  'meta' => 'Restored oak'],
+        ['img' => '/images/wood-25.jpg', 'title' => 'Carved Wall Mirror',     'meta' => 'Gilt & hardwood'],
+        ['img' => '/images/wood-34.jpg', 'title' => 'Gilded Carved Panel',    'meta' => 'Gold-leaf detail'],
+        ['img' => '/images/wood-27.jpg', 'title' => 'Marble-Top Sideboard',   'meta' => 'Restored antique'],
+        ['img' => '/images/wood-28.jpg', 'title' => 'Carved Bar Cabinet',     'meta' => 'Solid oak'],
+        ['img' => '/images/wood-13.jpg', 'title' => 'Live-Edge Dining Table', 'meta' => 'Solid ash'],
         ['img' => '/images/wood-22.jpg', 'title' => 'Dining Table & Stools',  'meta' => 'Stained pine'],
-        ['img' => '/images/wood-13.jpg', 'title' => 'Live-Edge Dining Table', 'meta' => 'Solid Ash'],
+        ['img' => '/images/wood-26.jpg', 'title' => 'Corner Shelving',        'meta' => 'Solid oak'],
         ['img' => '/images/wood-19.jpg', 'title' => 'Rustic Bench & Stool',   'meta' => 'Solid pine'],
-        ['img' => '/images/wood-21.jpg', 'title' => 'Log Side Table',          'meta' => 'Solid log'],
-        ['img' => '/images/wood-20.jpg', 'title' => 'Hand-Carved Panel',       'meta' => 'Relief carving'],
-        ['img' => '/images/wood-15.jpg', 'title' => 'Fitted Wall Shelf',       'meta' => 'Solid oak'],
     ];
 
     // BEFORE & AFTER: drag the slider on each. Each pair is the SAME piece
@@ -162,7 +166,7 @@
                 <div class="reveal mx-auto mb-16 max-w-2xl text-center">
                     <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-gold">Selected Work</p>
                     <h2 class="font-serif text-4xl font-medium text-espresso sm:text-5xl">The Collection</h2>
-                    <p class="mt-5 text-lg leading-relaxed text-mocha">A selection of recent commissions — each one designed, built and finished entirely by hand.</p>
+                    <p class="mt-5 text-lg leading-relaxed text-mocha">From bespoke builds to fine antique restoration — a selection of recent work, each piece finished by hand.</p>
                 </div>
 
                 <div class="grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
