@@ -37,7 +37,7 @@ new class extends Component {
         $key = 'contact-form:'.request()->ip();
 
         if (RateLimiter::tooManyAttempts($key, 3)) {
-            $this->addError('throttle', 'Too many messages. Please wait '.RateLimiter::availableIn($key).' seconds and try again.');
+            $this->addError('throttle', __('Too many messages. Please wait :seconds seconds and try again.', ['seconds' => RateLimiter::availableIn($key)]));
 
             return;
         }
@@ -71,9 +71,9 @@ new class extends Component {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
             </div>
-            <h3 class="font-serif text-2xl font-medium text-espresso">Thank you — your message is on its way.</h3>
-            <p class="mt-2 text-sm text-mocha">I read every enquiry personally and will reply within a day or two.</p>
-            <button wire:click="$set('sent', false)" class="mt-5 text-xs font-semibold uppercase tracking-widest text-gold underline-offset-4 hover:text-golddark hover:underline">Send another message</button>
+            <h3 class="font-serif text-2xl font-medium text-espresso">{{ __('Thank you — your message is on its way.') }}</h3>
+            <p class="mt-2 text-sm text-mocha">{{ __('I read every enquiry personally and will reply within a day or two.') }}</p>
+            <button wire:click="$set('sent', false)" class="mt-5 text-xs font-semibold uppercase tracking-widest text-gold underline-offset-4 hover:text-golddark hover:underline">{{ __('Send another message') }}</button>
         </div>
     @else
         <form wire:submit="submit" class="space-y-5" novalidate>
@@ -83,14 +83,14 @@ new class extends Component {
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                    <label for="cf-name" class="block text-xs font-semibold uppercase tracking-widest text-mocha">Name</label>
+                    <label for="cf-name" class="block text-xs font-semibold uppercase tracking-widest text-mocha">{{ __('Name') }}</label>
                     <input id="cf-name" type="text" wire:model.blur="name" autocomplete="name" required
                            aria-required="true" @error('name') aria-invalid="true" aria-describedby="cf-name-error" @enderror
                            class="mt-2 block w-full rounded-sm border-hair bg-porcelain text-espresso shadow-sm focus:border-gold focus:ring-gold">
                     @error('name') <p id="cf-name-error" class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
                 <div>
-                    <label for="cf-email" class="block text-xs font-semibold uppercase tracking-widest text-mocha">Email</label>
+                    <label for="cf-email" class="block text-xs font-semibold uppercase tracking-widest text-mocha">{{ __('Email') }}</label>
                     <input id="cf-email" type="email" wire:model.blur="email" autocomplete="email" required
                            aria-required="true" @error('email') aria-invalid="true" aria-describedby="cf-email-error" @enderror
                            class="mt-2 block w-full rounded-sm border-hair bg-porcelain text-espresso shadow-sm focus:border-gold focus:ring-gold">
@@ -99,14 +99,14 @@ new class extends Component {
             </div>
 
             <div>
-                <label for="cf-subject" class="block text-xs font-semibold uppercase tracking-widest text-mocha">Subject <span class="font-normal normal-case text-mocha/70">(optional)</span></label>
+                <label for="cf-subject" class="block text-xs font-semibold uppercase tracking-widest text-mocha">{{ __('Subject') }} <span class="font-normal normal-case text-mocha/70">{{ __('(optional)') }}</span></label>
                 <input id="cf-subject" type="text" wire:model.blur="subject"
                        class="mt-2 block w-full rounded-sm border-hair bg-porcelain text-espresso shadow-sm focus:border-gold focus:ring-gold">
                 @error('subject') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
             </div>
 
             <div>
-                <label for="cf-message" class="block text-xs font-semibold uppercase tracking-widest text-mocha">Tell me about your project</label>
+                <label for="cf-message" class="block text-xs font-semibold uppercase tracking-widest text-mocha">{{ __('Tell me about your project') }}</label>
                 <textarea id="cf-message" rows="5" wire:model.blur="message" required aria-required="true"
                           @error('message') aria-invalid="true" aria-describedby="cf-message-error" @enderror
                           class="mt-2 block w-full rounded-sm border-hair bg-porcelain text-espresso shadow-sm focus:border-gold focus:ring-gold"></textarea>
@@ -123,10 +123,10 @@ new class extends Component {
                 <button type="submit"
                         class="inline-flex items-center justify-center gap-2 rounded-full bg-espresso px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-ivory transition hover:bg-golddark focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 disabled:opacity-60"
                         wire:loading.attr="disabled" wire:target="submit">
-                    <span wire:loading.remove wire:target="submit">Send enquiry</span>
-                    <span wire:loading wire:target="submit">Sending…</span>
+                    <span wire:loading.remove wire:target="submit">{{ __('Send enquiry') }}</span>
+                    <span wire:loading wire:target="submit">{{ __('Sending…') }}</span>
                 </button>
-                <p class="text-xs text-mocha/80 sm:max-w-[15rem] sm:text-right">Your details are only used to reply to your enquiry — never shared.</p>
+                <p class="text-xs text-mocha/80 sm:max-w-[15rem] sm:text-right">{{ __('Your details are only used to reply to your enquiry — never shared.') }}</p>
             </div>
         </form>
     @endif
