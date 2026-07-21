@@ -45,16 +45,23 @@ new class extends Component {
         $data = $this->validate();
         RateLimiter::hit($key, 60);
 
-        $body = "New enquiry from the Wood Agency website\n\n"
-            ."Name: {$data['name']}\n"
-            ."Email: {$data['email']}\n"
-            .'Subject: '.($data['subject'] ?: '(none)')."\n\n"
-            .$data['message'];
+        $body = "{$data['name']} <{$data['email']}>\n"
+            .($data['subject'] ? "Subject: {$data['subject']}\n" : '')
+            ."\n"
+            .$data['message']
+            ."\n\n---\nReply to this email to answer "
+            .$data['name']." directly ({$data['email']}).";
 
+        // Gmail requires the From address to be the authenticated account, but
+        // the display NAME is free - so show the visitor there. Otherwise every
+        // enquiry lands in the inbox looking like it came from yourself.
         Mail::raw($body, function ($mail) use ($data) {
             $mail->to(config('mail.contact_to'))
+                ->from(config('mail.from.address'), $data['name'].' (Wood Agency)')
                 ->replyTo($data['email'], $data['name'])
-                ->subject('Website enquiry'.($data['subject'] ? ': '.$data['subject'] : ''));
+                ->subject($data['subject']
+                    ? $data['name'].' - '.$data['subject']
+                    : $data['name'].' - website enquiry');
         });
 
         $this->reset('name', 'email', 'subject', 'message');
