@@ -206,17 +206,16 @@
                 </div>
 
                 {{-- Masonry gallery — each folder in public/images/gallery/ is a card here --}}
-                <div class="grid auto-rows-[150px] grid-flow-row-dense grid-cols-2 gap-6 md:grid-cols-3 xl:grid-cols-4">
+                <div class="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 xl:grid-cols-4">
                     @foreach ($gallery as $p)
-                        @php $span = $loop->index % 5 === 0 ? 'row-span-3' : 'row-span-2'; @endphp
-                        <figure class="group flex flex-col {{ $span }}">
+                        <figure class="group">
                             @if ($p['images']->count() > 1)
                                 {{-- multi-photo piece → mini slideshow --}}
                                 <div x-data="{ i: 0, n: {{ $p['images']->count() }}, t: null,
                                                play(){ this.t = setInterval(() => this.i = (this.i + 1) % this.n, 3200); },
                                                stop(){ clearInterval(this.t); } }"
                                      x-init="play()" @mouseenter="stop()" @mouseleave="play()"
-                                     class="relative flex-1 overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/[0.08] transition-shadow duration-500 group-hover:shadow-[0_22px_45px_-24px_rgba(43,38,32,0.45)]">
+                                     class="relative aspect-[4/5] overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/[0.08] transition-shadow duration-500 group-hover:shadow-[0_22px_45px_-24px_rgba(43,38,32,0.45)]">
                                     @foreach ($p['images'] as $k => $img)
                                         <img src="{{ $img }}" alt="{{ $p['title'] }}" loading="lazy"
                                              x-show="i === {{ $k }}"
@@ -234,9 +233,9 @@
                                     <span class="pointer-events-none absolute right-3 top-3 rounded-full bg-espresso/60 px-2 py-0.5 text-[10px] font-semibold text-ivory">{{ $p['images']->count() }} photos</span>
                                 </div>
                             @else
-                                <div class="relative flex-1 overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/[0.08] transition-shadow duration-500 group-hover:shadow-[0_22px_45px_-24px_rgba(43,38,32,0.45)]">
+                                <div class="aspect-[4/5] overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/[0.08] transition-shadow duration-500 group-hover:shadow-[0_22px_45px_-24px_rgba(43,38,32,0.45)]">
                                     <img src="{{ $p['images'][0] }}" alt="{{ $p['title'] }}" loading="lazy"
-                                         class="absolute inset-0 h-full w-full object-cover transition duration-[1400ms] ease-out group-hover:scale-[1.05]">
+                                         class="h-full w-full object-cover transition duration-[1400ms] ease-out group-hover:scale-[1.05]">
                                 </div>
                             @endif
                             <figcaption class="mt-4 text-center">
