@@ -243,7 +243,7 @@
                                      x-init="play()" @mouseenter="stop()" @mouseleave="play()"
                                      class="relative aspect-[4/5] overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/[0.08] transition-shadow duration-500 group-hover:shadow-[0_22px_45px_-24px_rgba(43,38,32,0.45)]">
                                     @foreach ($p['images'] as $k => $img)
-                                        <img src="{{ $img }}" alt="{{ $p['title'] }}" loading="lazy"
+                                        <img src="{{ $img }}" alt="{{ __($p['title']) }}" loading="lazy"
                                              x-show="i === {{ $k }}"
                                              x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                                              x-transition:leave="transition ease-in duration-700" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
@@ -260,7 +260,7 @@
                                 </div>
                             @else
                                 <div class="aspect-[4/5] overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/[0.08] transition-shadow duration-500 group-hover:shadow-[0_22px_45px_-24px_rgba(43,38,32,0.45)]">
-                                    <img src="{{ $p['images'][0] }}" alt="{{ $p['title'] }}" loading="lazy"
+                                    <img src="{{ $p['images'][0] }}" alt="{{ __($p['title']) }}" loading="lazy"
                                          class="h-full w-full object-cover transition duration-[1400ms] ease-out group-hover:scale-[1.05]">
                                 </div>
                             @endif
@@ -303,12 +303,12 @@
                                      @pointerup.window="drag = false"
                                      class="group relative {{ $ba['aspect'] ?? 'aspect-[4/3]' }} mx-auto w-full max-w-[280px] cursor-ew-resize touch-none select-none overflow-hidden rounded-sm bg-espresso ring-1 ring-goldlight/25 shadow-[0_28px_60px_-28px_rgba(0,0,0,0.85)]">
                                     {{-- After (full) --}}
-                                    <img src="{{ $ba['after'] }}" alt="{{ $ba['title'] }} — after" draggable="false"
+                                    <img src="{{ $ba['after'] }}" alt="{{ __($ba['title']) }} — {{ __('After') }}" draggable="false"
                                          class="pointer-events-none absolute inset-0 h-full w-full object-cover" loading="lazy">
                                     <span class="pointer-events-none absolute right-4 top-4 rounded-full bg-espresso/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-ivory">{{ __('After') }}</span>
                                     {{-- Before (clipped) --}}
                                     <div class="pointer-events-none absolute inset-0" :style="`clip-path: inset(0 ${100 - pos}% 0 0)`">
-                                        <img src="{{ $ba['before'] }}" alt="{{ $ba['title'] }} — before" draggable="false"
+                                        <img src="{{ $ba['before'] }}" alt="{{ __($ba['title']) }} — {{ __('Before') }}" draggable="false"
                                              class="absolute inset-0 h-full w-full object-cover" loading="lazy">
                                         <span class="absolute left-4 top-4 rounded-full bg-espresso/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-ivory">{{ __('Before') }}</span>
                                     </div>
