@@ -45,17 +45,53 @@ new class extends Component {
         $data = $this->validate();
         RateLimiter::hit($key, 60);
 
-        $body = "{$data['name']} <{$data['email']}>\n"
-            .($data['subject'] ? "Subject: {$data['subject']}\n" : '')
-            ."\n"
-            .$data['message']
-            ."\n\n---\nReply to this email to answer "
-            .$data['name']." directly ({$data['email']}).";
+        // The name is already in the subject line and the sender column, so the
+        // body carries it exactly once - with the message itself leading.
+        // Only the query string is encoded - encoding the address itself breaks
+        // the link in some mail clients.
+        $mailto = 'mailto:'.$data['email']
+            .'?subject='.rawurlencode('Re: '.($data['subject'] ?: 'your enquiry'));
+
+        $html = '
+<div style="background:#f4eee3;padding:32px 14px;font-family:Helvetica,Arial,sans-serif;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #e4d9c6;">
+    <tr>
+      <td style="padding:26px 34px 20px;border-bottom:1px solid #e4d9c6;">
+        <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#a8875a;">Wood Agency</div>
+        <div style="font-family:Georgia,serif;font-size:23px;color:#2b2620;padding-top:5px;">New enquiry</div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:28px 34px 26px;font-size:15px;line-height:1.75;color:#2b2620;white-space:pre-wrap;">'.e($data['message']).'</td>
+    </tr>
+    <tr>
+      <td style="padding:0 34px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#faf7f2;border:1px solid #e4d9c6;">
+          <tr>
+            <td style="padding:18px 22px;">
+              <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#a8875a;">Sent by</div>
+              <div style="font-size:17px;color:#2b2620;padding-top:6px;">'.e($data['name']).'</div>
+              <div style="font-size:14px;padding-top:3px;"><a href="mailto:'.e($data['email']).'" style="color:#8a6d43;text-decoration:none;">'.e($data['email']).'</a></div>
+            </td>
+            <td align="right" style="padding:18px 22px;">
+              <a href="'.e($mailto).'" style="display:inline-block;background:#2b2620;color:#f4eee3;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;text-decoration:none;padding:12px 24px;">Reply</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:16px 34px 28px;font-size:12px;line-height:1.6;color:#9b9184;">
+        Hitting reply in your mail app works too - it goes straight back to the sender.
+      </td>
+    </tr>
+  </table>
+</div>';
 
         // Gmail requires the From address to be the authenticated account, but
         // the display NAME is free - so show the visitor there. Otherwise every
         // enquiry lands in the inbox looking like it came from yourself.
-        Mail::raw($body, function ($mail) use ($data) {
+        Mail::html($html, function ($mail) use ($data) {
             $mail->to(config('mail.contact_to'))
                 ->from(config('mail.from.address'), $data['name'].' (Wood Agency)')
                 ->replyTo($data['email'], $data['name'])
