@@ -193,7 +193,10 @@
                 <h1 class="font-serif text-5xl font-medium leading-[1.05] text-ivory [text-shadow:0_2px_20px_rgba(0,0,0,0.6)] sm:text-7xl">
                     {!! __('Furniture, made to<br>last a lifetime.') !!}
                 </h1>
-                <p class="mx-auto mt-7 max-w-xl text-lg leading-relaxed text-ivory [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]">
+                <p class="mt-6 font-serif text-2xl italic text-brass-300 [text-shadow:0_1px_12px_rgba(0,0,0,0.75)] sm:text-3xl">
+                    {{ __('The wood is a living being') }}
+                </p>
+                <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-ivory [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]">
                     {{ __('I am :name — a master woodworker in :location. For over :years years I have shaped raw timber into furniture built to be used, loved and passed on.', ['name' => $name, 'location' => $location, 'years' => $years]) }}
                 </p>
                 <div class="mt-9 flex items-center justify-center gap-8">
