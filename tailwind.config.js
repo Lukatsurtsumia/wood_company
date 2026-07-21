@@ -17,14 +17,16 @@ export default {
                 display: ['"Cormorant Garamond"', ...defaultTheme.fontFamily.serif],
             },
             colors: {
-                // Elegant, luxury light palette
-                ivory: '#faf7f2',
-                porcelain: '#ffffff',
+                // Elegant, luxury palette — warm champagne creams + deep noir
+                ivory: '#f4eee3',
+                porcelain: '#fbf8f2',
                 espresso: '#2b2620',
+                noir: '#1b1611',
                 mocha: '#8c8175',
                 gold: '#a8875a',
+                goldlight: '#d9bb87',
                 golddark: '#8c6f46',
-                hair: '#e8e1d6',
+                hair: '#e4d9c6',
                 // Warm oak / walnut wood scale
                 wood: {
                     50: '#faf6f0',

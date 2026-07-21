@@ -91,6 +91,11 @@
             body{ font-family:'Figtree', ui-sans-serif, system-ui, sans-serif; }
             .font-serif{ font-family:'Cormorant Garamond', ui-serif, Georgia, serif; }
             section[id]{ scroll-margin-top:5rem; }
+            /* Fine film grain over the whole page — adds a tactile, printed feel */
+            body::after{
+                content:''; position:fixed; inset:0; pointer-events:none; z-index:100; opacity:.035;
+                background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            }
             .reveal{ opacity:0; transform:translateY(20px); transition:opacity 1s ease, transform 1s ease; }
             .reveal.is-in{ opacity:1; transform:none; }
             @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; } }
@@ -244,16 +249,18 @@
         </section>
 
         {{-- ───────────────────────── Before & After ───────────────────────── --}}
-        <section id="restoration" class="border-t border-hair bg-porcelain py-24 lg:py-32">
-            <div class="mx-auto max-w-6xl px-6 lg:px-8">
+        <section id="restoration" class="relative overflow-hidden bg-noir py-24 lg:py-32">
+            {{-- soft warm glow for depth --}}
+            <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(168,135,90,0.16),transparent_60%)]"></div>
+            <div class="relative mx-auto max-w-6xl px-6 lg:px-8">
                 <div class="reveal mx-auto mb-16 max-w-2xl text-center">
-                    <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-gold">From Rough to Refined</p>
-                    <h2 class="font-serif text-4xl font-medium text-espresso sm:text-5xl">Before &amp; After</h2>
-                    <p class="mt-5 text-lg leading-relaxed text-mocha">Drag the handle to see each piece transformed — from raw timber and tired carcasses to finished, heirloom furniture.</p>
+                    <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-goldlight">From Rough to Refined</p>
+                    <h2 class="font-serif text-4xl font-medium text-ivory sm:text-5xl">Before &amp; After</h2>
+                    <p class="mt-5 text-lg leading-relaxed text-ivory/65">Drag the handle to see each piece transformed — from raw timber and tired carcasses to finished, heirloom furniture.</p>
                     <div class="mt-8 flex items-center justify-center gap-3" aria-hidden="true">
-                        <span class="h-px w-14 bg-gradient-to-r from-transparent to-gold/50"></span>
-                        <span class="h-1.5 w-1.5 rotate-45 bg-gold"></span>
-                        <span class="h-px w-14 bg-gradient-to-l from-transparent to-gold/50"></span>
+                        <span class="h-px w-14 bg-gradient-to-r from-transparent to-goldlight/60"></span>
+                        <span class="h-1.5 w-1.5 rotate-45 bg-goldlight"></span>
+                        <span class="h-px w-14 bg-gradient-to-l from-transparent to-goldlight/60"></span>
                     </div>
                 </div>
 
@@ -268,7 +275,7 @@
                                      @pointerdown="drag = true; move($event)"
                                      @pointermove="drag && move($event)"
                                      @pointerup.window="drag = false"
-                                     class="group relative {{ $ba['aspect'] ?? 'aspect-[4/3]' }} mx-auto w-full max-w-[280px] cursor-ew-resize touch-none select-none overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/10 shadow-[0_18px_40px_-24px_rgba(43,38,32,0.45)]">
+                                     class="group relative {{ $ba['aspect'] ?? 'aspect-[4/3]' }} mx-auto w-full max-w-[280px] cursor-ew-resize touch-none select-none overflow-hidden rounded-sm bg-espresso ring-1 ring-goldlight/25 shadow-[0_28px_60px_-28px_rgba(0,0,0,0.85)]">
                                     {{-- After (full) --}}
                                     <img src="{{ $ba['after'] }}" alt="{{ $ba['title'] }} — after" draggable="false"
                                          class="pointer-events-none absolute inset-0 h-full w-full object-cover" loading="lazy">
@@ -289,10 +296,10 @@
                                 </div>
                             </figure>
                             <figcaption class="mt-5 text-center">
-                                <span class="mx-auto mb-3 block h-px w-8 bg-gold/60"></span>
-                                <p class="mb-1.5 text-xs font-medium uppercase tracking-[0.3em] text-gold">0{{ $i + 1 }} — Restoration</p>
-                                <h3 class="font-serif text-2xl font-medium tracking-wide text-espresso">{{ $ba['title'] }}</h3>
-                                <p class="mt-1.5 text-sm text-mocha">Drag the handle to reveal the transformation.</p>
+                                <span class="mx-auto mb-3 block h-px w-8 bg-goldlight/70"></span>
+                                <p class="mb-1.5 text-xs font-medium uppercase tracking-[0.3em] text-goldlight">0{{ $i + 1 }} — Restoration</p>
+                                <h3 class="font-serif text-2xl font-medium tracking-wide text-ivory">{{ $ba['title'] }}</h3>
+                                <p class="mt-1.5 text-sm text-ivory/50">Drag the handle to reveal the transformation.</p>
                             </figcaption>
                         </div>
                     @endforeach
