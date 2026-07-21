@@ -76,8 +76,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>{{ $brand }} — {{ $role }}</title>
-        <meta name="description" content="{{ $name }} — {{ $role }}, {{ $location }}. {{ __('Bespoke handmade furniture, joinery and fine antique restoration. Available for commissions.') }}">
+        <title>{{ $brand }} - {{ $role }}</title>
+        <meta name="description" content="{{ $name }} - {{ $role }}, {{ $location }}. {{ __('Bespoke handmade furniture, joinery and fine antique restoration. Available for commissions.') }}">
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
@@ -92,7 +92,7 @@
             body{ font-family:'Figtree', ui-sans-serif, system-ui, sans-serif; }
             .font-serif{ font-family:'Cormorant Garamond', ui-serif, Georgia, serif; }
             section[id]{ scroll-margin-top:5rem; }
-            /* Fine film grain over the whole page — adds a tactile, printed feel */
+            /* Fine film grain over the whole page - adds a tactile, printed feel */
             body::after{
                 content:''; position:fixed; inset:0; pointer-events:none; z-index:100; opacity:.035;
                 background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -197,7 +197,7 @@
                     {{ __('The wood is a living being') }}
                 </p>
                 <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-ivory [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]">
-                    {{ __('I am :name — a master woodworker in :location. For over :years years I have shaped raw timber into furniture built to be used, loved and passed on.', ['name' => $name, 'location' => $location, 'years' => $years]) }}
+                    {{ __('I am :name - a master woodworker in :location. For over :years years I have shaped raw timber into furniture built to be used, loved and passed on.', ['name' => $name, 'location' => $location, 'years' => $years]) }}
                 </p>
                 <div class="mt-9 flex items-center justify-center gap-8">
                     <a href="#work" class="rounded-full border border-ivory/50 px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-ivory transition hover:bg-ivory hover:text-espresso">
@@ -223,7 +223,7 @@
                 <div class="reveal mx-auto mb-16 max-w-2xl text-center">
                     <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-gold">{{ __('Selected Work') }}</p>
                     <h2 class="font-serif text-4xl font-medium text-espresso sm:text-5xl">{{ __('The Collection') }}</h2>
-                    <p class="mt-5 text-lg leading-relaxed text-mocha">{{ __('From bespoke builds to fine antique restoration — a gallery of recent work, each piece made or restored by hand.') }}</p>
+                    <p class="mt-5 text-lg leading-relaxed text-mocha">{{ __('From bespoke builds to fine antique restoration - a gallery of recent work, each piece made or restored by hand.') }}</p>
                     <div class="mt-8 flex items-center justify-center gap-3" aria-hidden="true">
                         <span class="h-px w-14 bg-gradient-to-r from-transparent to-gold/50"></span>
                         <span class="h-1.5 w-1.5 rotate-45 bg-gold"></span>
@@ -231,7 +231,7 @@
                     </div>
                 </div>
 
-                {{-- Masonry gallery — each folder in public/images/gallery/ is a card here --}}
+                {{-- Masonry gallery - each folder in public/images/gallery/ is a card here --}}
                 <div class="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 xl:grid-cols-4">
                     @foreach ($gallery as $p)
                         <figure class="group">
@@ -282,7 +282,7 @@
                 <div class="reveal mx-auto mb-16 max-w-2xl text-center">
                     <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-goldlight">{{ __('From Rough to Refined') }}</p>
                     <h2 class="font-serif text-4xl font-medium text-ivory sm:text-5xl">{{ __('Before & After') }}</h2>
-                    <p class="mt-5 text-lg leading-relaxed text-ivory/65">{{ __('Drag the handle to see each piece transformed — from raw timber and tired carcasses to finished, heirloom furniture.') }}</p>
+                    <p class="mt-5 text-lg leading-relaxed text-ivory/65">{{ __('Drag the handle to see each piece transformed - from raw timber and tired carcasses to finished, heirloom furniture.') }}</p>
                     <div class="mt-8 flex items-center justify-center gap-3" aria-hidden="true">
                         <span class="h-px w-14 bg-gradient-to-r from-transparent to-goldlight/60"></span>
                         <span class="h-1.5 w-1.5 rotate-45 bg-goldlight"></span>
@@ -303,12 +303,12 @@
                                      @pointerup.window="drag = false"
                                      class="group relative {{ $ba['aspect'] ?? 'aspect-[4/3]' }} mx-auto w-full max-w-[280px] cursor-ew-resize touch-none select-none overflow-hidden rounded-sm bg-espresso ring-1 ring-goldlight/25 shadow-[0_28px_60px_-28px_rgba(0,0,0,0.85)]">
                                     {{-- After (full) --}}
-                                    <img src="{{ $ba['after'] }}" alt="{{ __($ba['title']) }} — {{ __('After') }}" draggable="false"
+                                    <img src="{{ $ba['after'] }}" alt="{{ __($ba['title']) }} - {{ __('After') }}" draggable="false"
                                          class="pointer-events-none absolute inset-0 h-full w-full object-cover" loading="lazy">
                                     <span class="pointer-events-none absolute right-4 top-4 rounded-full bg-espresso/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-ivory">{{ __('After') }}</span>
                                     {{-- Before (clipped) --}}
                                     <div class="pointer-events-none absolute inset-0" :style="`clip-path: inset(0 ${100 - pos}% 0 0)`">
-                                        <img src="{{ $ba['before'] }}" alt="{{ __($ba['title']) }} — {{ __('Before') }}" draggable="false"
+                                        <img src="{{ $ba['before'] }}" alt="{{ __($ba['title']) }} - {{ __('Before') }}" draggable="false"
                                              class="absolute inset-0 h-full w-full object-cover" loading="lazy">
                                         <span class="absolute left-4 top-4 rounded-full bg-espresso/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-ivory">{{ __('Before') }}</span>
                                     </div>
@@ -323,7 +323,7 @@
                             </figure>
                             <figcaption class="mt-5 text-center">
                                 <span class="mx-auto mb-3 block h-px w-8 bg-goldlight/70"></span>
-                                <p class="mb-1.5 text-xs font-medium uppercase tracking-[0.3em] text-goldlight">0{{ $i + 1 }} — {{ __('Restoration') }}</p>
+                                <p class="mb-1.5 text-xs font-medium uppercase tracking-[0.3em] text-goldlight">0{{ $i + 1 }} - {{ __('Restoration') }}</p>
                                 <h3 class="font-serif text-2xl font-medium tracking-wide text-ivory">{{ __($ba['title']) }}</h3>
                                 <p class="mt-1.5 text-sm text-ivory/50">{{ __('Drag the handle to reveal the transformation.') }}</p>
                             </figcaption>
@@ -345,11 +345,11 @@
                 <div class="reveal">
                     <p class="mb-6 text-xs font-medium uppercase tracking-[0.35em] text-gold">{{ __('The Studio') }}</p>
                     <p class="font-serif text-3xl font-medium italic leading-snug text-espresso sm:text-4xl">
-                        &ldquo;{{ __('Every piece begins with a single log — and the patience to let its grain lead the way.') }}&rdquo;
+                        &ldquo;{{ __('Every piece begins with a single log - and the patience to let its grain lead the way.') }}&rdquo;
                     </p>
                     <div class="mt-8 space-y-4 leading-relaxed text-mocha">
                         <p>{{ __('For over :years years I have worked from my own workshop in :location, shaping raw timber into furniture and joinery made to be used, loved and passed on. I work alone, with each client, from the first drawing to the final finish.', ['years' => $years, 'location' => $location]) }}</p>
-                        <p>{{ __('No flat-packs, no shortcuts — only honest materials and traditional craft.') }}</p>
+                        <p>{{ __('No flat-packs, no shortcuts - only honest materials and traditional craft.') }}</p>
                     </div>
 
                     <div class="mt-10 flex divide-x divide-hair border-y border-hair">
@@ -373,7 +373,7 @@
                     <div class="reveal">
                         <p class="mb-5 text-xs font-medium uppercase tracking-[0.35em] text-gold">{{ __('Enquiries') }}</p>
                         <h2 class="font-serif text-4xl font-medium leading-tight text-espresso sm:text-5xl">{!! __('Commission<br>a piece.') !!}</h2>
-                        <p class="mt-6 max-w-md text-lg leading-relaxed text-mocha">{{ __('Tell me a little about what you have in mind and I will reply with some initial thoughts and a rough estimate — usually within a day or two.') }}</p>
+                        <p class="mt-6 max-w-md text-lg leading-relaxed text-mocha">{{ __('Tell me a little about what you have in mind and I will reply with some initial thoughts and a rough estimate - usually within a day or two.') }}</p>
 
                         <div class="mt-10 space-y-4 border-t border-hair pt-8 text-sm">
                             <div class="flex justify-between gap-4">
@@ -408,16 +408,11 @@
                             <a href="{{ $href }}" class="text-xs uppercase tracking-[0.2em] text-ivory/70 transition hover:text-gold">{{ __($label) }}</a>
                         @endforeach
                     </nav>
-                    <div class="flex gap-6 text-xs uppercase tracking-[0.2em] text-ivory/60">
-                        @foreach (['Instagram', 'Pinterest', 'LinkedIn'] as $social)
-                            <a href="#" class="transition hover:text-gold">{{ $social }}</a>
-                        @endforeach
-                    </div>
                 </div>
 
                 <div class="mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-8 text-xs text-ivory/50 sm:flex-row">
                     <p>&copy; {{ date('Y') }} {{ $brand }}. {{ __('All rights reserved.') }}</p>
-                    <p>{!! __('Designed & built with :claude — build yours at claude.ai', ['claude' => '<a href="https://claude.ai" target="_blank" rel="noopener" class="text-ivory/80 underline-offset-4 hover:text-gold hover:underline">Claude</a>']) !!}</p>
+                    <p>{{ __('Designed & built by :name', ['name' => $name]) }}</p>
                 </div>
             </div>
         </footer>

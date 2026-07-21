@@ -1,6 +1,6 @@
 # Deploying Wood Agency
 
-A single-page Laravel site. **No database required** — sessions and cache are
+A single-page Laravel site. **No database required** - sessions and cache are
 file-based, and the contact form sends email directly.
 
 ## Requirements
@@ -42,7 +42,7 @@ Then edit `.env`:
 1. Turn on 2-Step Verification: <https://myaccount.google.com/security>
 2. Create an App Password: <https://myaccount.google.com/apppasswords>
    (choose "Mail" → "Other", name it "Wood Agency")
-3. Paste the 16-character code into `MAIL_PASSWORD` in `.env` — no spaces.
+3. Paste the 16-character code into `MAIL_PASSWORD` in `.env` - no spaces.
 
 The site sends *from* the Gmail account and sets the visitor's address as
 **Reply-To**, so hitting reply answers the client directly.
@@ -72,7 +72,7 @@ Re-run these after **any** change to `.env` or the code.
 
 ## Adding photos later
 
-No code changes needed — just add files:
+No code changes needed - just add files:
 
 - **A finished piece:** create a folder in `public/images/gallery/` named after
   the piece (e.g. `oak-console`) and put the photo(s) inside. Several photos in

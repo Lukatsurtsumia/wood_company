@@ -18,7 +18,7 @@ new class extends Component {
     #[Validate('required|string|min:10|max:3000')]
     public string $message = '';
 
-    // Honeypot — real users never see or fill this. Bots often do.
+    // Honeypot - real users never see or fill this. Bots often do.
     public string $website = '';
 
     public bool $sent = false;
@@ -71,7 +71,7 @@ new class extends Component {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
             </div>
-            <h3 class="font-serif text-2xl font-medium text-espresso">{{ __('Thank you — your message is on its way.') }}</h3>
+            <h3 class="font-serif text-2xl font-medium text-espresso">{{ __('Thank you - your message is on its way.') }}</h3>
             <p class="mt-2 text-sm text-mocha">{{ __('I read every enquiry personally and will reply within a day or two.') }}</p>
             <button wire:click="$set('sent', false)" class="mt-5 text-xs font-semibold uppercase tracking-widest text-gold underline-offset-4 hover:text-golddark hover:underline">{{ __('Send another message') }}</button>
         </div>
@@ -126,7 +126,7 @@ new class extends Component {
                     <span wire:loading.remove wire:target="submit">{{ __('Send enquiry') }}</span>
                     <span wire:loading wire:target="submit">{{ __('Sending…') }}</span>
                 </button>
-                <p class="text-xs text-mocha/80 sm:max-w-[15rem] sm:text-right">{{ __('Your details are only used to reply to your enquiry — never shared.') }}</p>
+                <p class="text-xs text-mocha/80 sm:max-w-[15rem] sm:text-right">{{ __('Your details are only used to reply to your enquiry - never shared.') }}</p>
             </div>
         </form>
     @endif
