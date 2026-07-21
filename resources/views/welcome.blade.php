@@ -3,13 +3,13 @@
     $name     = __('Artem Tsurtsumia');
     $brand    = 'Wood Agency';
     $role     = __('Master Woodworker & Furniture Maker');
-    $email    = 'contact@woodagency.fr';
-    $phone    = '+33 6 12 34 56 78';
+    $email    = 'artemwurwumia1976@gmail.com';
+    $phone    = '+33 6 35 93 26 84';
     $location = __('Nice, France');
     $years    = 25;
 
     // The About portrait uses a real photo (the maker at work).
-    $aboutImg = '/images/wood-14.jpg';
+    $aboutImg = '/images/studio.jpg';
 
     // HERO: professional woodworking stock photos (Unsplash CDN) for a
     // polished first impression. Real work is shown further down.

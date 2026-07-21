@@ -13,13 +13,3 @@ Route::get('lang/{locale}', function (string $locale) {
 
     return back();
 })->name('lang.switch');
-
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
-
-require __DIR__.'/auth.php';
