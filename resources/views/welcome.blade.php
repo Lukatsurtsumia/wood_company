@@ -25,11 +25,16 @@
     // the title (a leading "01-" just controls order). Put MORE than one photo
     // in a folder and its card becomes a mini-slideshow.
     // To add a piece: make a folder like "oak-console" and drop photo(s) in.
-    $gallery = collect(glob(public_path('images/gallery/*'), GLOB_ONLYDIR))
+    // NOTE: no GLOB_BRACE - it is a glibc extension and does not exist on
+    // Alpine/musl, which is what the production image runs on.
+    $isImage = fn (string $p) => (bool) preg_match('/\.(jpe?g|png|webp)$/i', $p);
+
+    $gallery = collect(glob(public_path('images/gallery/*'), GLOB_ONLYDIR) ?: [])
         ->sort(SORT_NATURAL)
-        ->map(function ($dir) {
+        ->map(function ($dir) use ($isImage) {
             $slug = basename($dir);
-            $images = collect(glob($dir.'/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG}', GLOB_BRACE))
+            $images = collect(glob($dir.'/*') ?: [])
+                ->filter($isImage)
                 ->sort(SORT_NATURAL)
                 ->map(fn ($p) => '/images/gallery/'.$slug.'/'.basename($p))
                 ->values();
@@ -46,7 +51,8 @@
     // Drop matching pairs in public/images/before-after/ named:
     //   <sort>-<name>__before.jpg   and   <sort>-<name>__after.jpg
     // e.g. 4-oak-console__before.jpg / 4-oak-console__after.jpg
-    $beforeAfter = collect(glob(public_path('images/before-after/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG}'), GLOB_BRACE))
+    $beforeAfter = collect(glob(public_path('images/before-after/*')) ?: [])
+        ->filter($isImage)
         ->reduce(function ($pairs, $p) {
             $base = basename($p);
             if (preg_match('/^(.*)__(before|after)\.[A-Za-z]+$/', $base, $m)) {
