@@ -206,9 +206,9 @@
                 </div>
 
                 {{-- Masonry gallery — each folder in public/images/gallery/ is a card here --}}
-                <div class="columns-1 gap-6 [column-fill:balance] sm:columns-2 lg:columns-3 xl:columns-4">
+                <div class="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 xl:grid-cols-4">
                     @foreach ($gallery as $p)
-                        <figure class="group mb-6 break-inside-avoid">
+                        <figure class="group">
                             @if ($p['images']->count() > 1)
                                 {{-- multi-photo piece → mini slideshow --}}
                                 <div x-data="{ i: 0, n: {{ $p['images']->count() }}, t: null,
@@ -233,9 +233,9 @@
                                     <span class="pointer-events-none absolute right-3 top-3 rounded-full bg-espresso/60 px-2 py-0.5 text-[10px] font-semibold text-ivory">{{ $p['images']->count() }} photos</span>
                                 </div>
                             @else
-                                <div class="overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/[0.08] transition-shadow duration-500 group-hover:shadow-[0_22px_45px_-24px_rgba(43,38,32,0.45)]">
+                                <div class="aspect-[4/5] overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/[0.08] transition-shadow duration-500 group-hover:shadow-[0_22px_45px_-24px_rgba(43,38,32,0.45)]">
                                     <img src="{{ $p['images'][0] }}" alt="{{ $p['title'] }}" loading="lazy"
-                                         class="w-full transition duration-[1400ms] ease-out group-hover:scale-[1.05]">
+                                         class="h-full w-full object-cover transition duration-[1400ms] ease-out group-hover:scale-[1.05]">
                                 </div>
                             @endif
                             <figcaption class="mt-4 text-center">
