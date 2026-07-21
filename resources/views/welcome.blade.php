@@ -418,7 +418,7 @@
 
                 <div class="mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-8 text-xs text-ivory/50 sm:flex-row">
                     <p>&copy; {{ date('Y') }} {{ $brand }}. {{ __('All rights reserved.') }}</p>
-                    <p>{{ __('Designed & built by :name', ['name' => $name]) }}</p>
+                    <p>{{ __('Designed & built by :name', ['name' => __('Luka Tsurtsumia')]) }}</p>
                 </div>
             </div>
         </footer>
