@@ -268,7 +268,7 @@
                                      @pointerdown="drag = true; move($event)"
                                      @pointermove="drag && move($event)"
                                      @pointerup.window="drag = false"
-                                     class="group relative {{ $ba['aspect'] ?? 'aspect-[4/3]' }} mx-auto w-full max-w-sm cursor-ew-resize touch-none select-none overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/10 shadow-[0_18px_40px_-24px_rgba(43,38,32,0.45)]">
+                                     class="group relative {{ $ba['aspect'] ?? 'aspect-[4/3]' }} mx-auto w-full max-w-[280px] cursor-ew-resize touch-none select-none overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/10 shadow-[0_18px_40px_-24px_rgba(43,38,32,0.45)]">
                                     {{-- After (full) --}}
                                     <img src="{{ $ba['after'] }}" alt="{{ $ba['title'] }} — after" draggable="false"
                                          class="pointer-events-none absolute inset-0 h-full w-full object-cover" loading="lazy">
