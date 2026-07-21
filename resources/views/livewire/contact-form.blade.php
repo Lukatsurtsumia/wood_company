@@ -99,16 +99,26 @@ new class extends Component {
         // Gmail requires the From address to be the authenticated account, but
         // the display NAME is free - so show the visitor there. Otherwise every
         // enquiry lands in the inbox looking like it came from yourself.
-        Mail::send([], [], function ($mail) use ($data, $html, $text) {
-            $mail->to(config('mail.contact_to'))
-                ->from(config('mail.from.address'), $data['name'].' (Wood Agency)')
-                ->replyTo($data['email'], $data['name'])
-                ->subject($data['subject']
-                    ? $data['name'].' - '.$data['subject']
-                    : $data['name'].' - website enquiry')
-                ->text($text)
-                ->html($html);
-        });
+        try {
+            Mail::send([], [], function ($mail) use ($data, $html, $text) {
+                $mail->to(config('mail.contact_to'))
+                    ->from(config('mail.from.address'), $data['name'].' (Wood Agency)')
+                    ->replyTo($data['email'], $data['name'])
+                    ->subject($data['subject']
+                        ? $data['name'].' - '.$data['subject']
+                        : $data['name'].' - website enquiry')
+                    ->text($text)
+                    ->html($html);
+            });
+        } catch (\Throwable $e) {
+            // Never lose an enquiry silently: log it, and give the visitor the
+            // address so they can still get in touch.
+            report($e);
+
+            $this->addError('send', __('Sorry - your message could not be sent just now. Please email me directly at :email.', ['email' => config('mail.contact_to')]));
+
+            return;
+        }
 
         $this->reset('name', 'email', 'subject', 'message');
         $this->sent = true;
@@ -131,7 +141,11 @@ new class extends Component {
     @else
         <form wire:submit="submit" class="space-y-5" novalidate>
             @error('throttle')
-                <div class="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700" role="alert">{{ $message }}</div>
+                <div class="rounded-sm bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700" role="alert">{{ $message }}</div>
+            @enderror
+
+            @error('send')
+                <div class="rounded-sm bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700" role="alert">{{ $message }}</div>
             @enderror
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">

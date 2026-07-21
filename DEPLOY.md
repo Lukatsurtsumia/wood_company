@@ -46,6 +46,7 @@ SESSION_DRIVER=cookie
 SESSION_SECURE_COOKIE=true
 CACHE_STORE=file
 QUEUE_CONNECTION=sync
+LOG_CHANNEL=stderr      # so errors show in Coolify's log viewer, not a dead file
 LOG_LEVEL=error
 
 MAIL_MAILER=smtp
@@ -68,6 +69,12 @@ CONTACT_TO=artemwurwumia1976@gmail.com
 
 Mail is sent **from** the Gmail account with the visitor's address as
 **Reply-To**, so hitting reply answers the client directly.
+
+Because Gmail forces the `From` to be the authenticated account, enquiries
+arrive as `artemwurwumia1976@gmail.com` mailing itself. Gmail is suspicious of
+that, so the enquiry is sent as `multipart/alternative` (HTML **and** plain
+text) to keep it out of Spam. If enquiries ever go missing, check Spam first
+and mark "Not spam" - that trains the filter.
 
 ## 4. Domain + DNS
 
