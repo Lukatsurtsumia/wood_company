@@ -88,16 +88,26 @@ new class extends Component {
   </table>
 </div>';
 
+        // Plain-text alternative. An HTML-only message scores badly with spam
+        // filters (and self-addressed mail is already suspect), so always send
+        // multipart/alternative.
+        $text = "New enquiry - Wood Agency\n\n"
+            .$data['message']
+            ."\n\n--\nSent by ".$data['name']."\n".$data['email']
+            ."\n\nReply to this email to answer directly.";
+
         // Gmail requires the From address to be the authenticated account, but
         // the display NAME is free - so show the visitor there. Otherwise every
         // enquiry lands in the inbox looking like it came from yourself.
-        Mail::html($html, function ($mail) use ($data) {
+        Mail::send([], [], function ($mail) use ($data, $html, $text) {
             $mail->to(config('mail.contact_to'))
                 ->from(config('mail.from.address'), $data['name'].' (Wood Agency)')
                 ->replyTo($data['email'], $data['name'])
                 ->subject($data['subject']
                     ? $data['name'].' - '.$data['subject']
-                    : $data['name'].' - website enquiry');
+                    : $data['name'].' - website enquiry')
+                ->text($text)
+                ->html($html);
         });
 
         $this->reset('name', 'email', 'subject', 'message');
