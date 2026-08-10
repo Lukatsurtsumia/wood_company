@@ -1,7 +1,7 @@
 @php
     // ── Edit these to make the site your own ─────────────────────────────
     $name     = __('Artem Tsurtsumia');
-    $brand    = 'Toma';
+    $brand    = 'Arte';
     $role     = __('Furniture, Door & Window Restoration');
     $email    = 'artemwurwumia1976@gmail.com';
     $phone    = '+33 6 35 93 26 84';
@@ -126,7 +126,7 @@
             <div class="mx-auto max-w-6xl px-6 lg:px-8">
                 <div class="flex h-20 items-center justify-between">
                     <a href="#top" class="flex items-center transition-transform hover:scale-[1.02]" aria-label="{{ $brand }}">
-                        <img src="/images/logo.png" alt="{{ $brand }}" width="480" height="437" class="h-16 w-auto">
+                        <img src="/images/logo.png" alt="{{ $brand }}" width="480" height="448" class="h-16 w-auto">
                     </a>
 
                     <nav class="hidden items-center gap-9 md:flex" :class="scrolled ? '' : '[&_a]:[text-shadow:0_1px_6px_rgba(0,0,0,0.5)]'">
@@ -417,7 +417,7 @@
             <div class="mx-auto max-w-6xl px-6 py-16 lg:px-8">
                 <div class="flex flex-col items-center gap-8 text-center">
                     <a href="#top" aria-label="{{ $brand }}">
-                        <img src="/images/logo.png" alt="{{ $brand }}" width="480" height="437" class="h-20 w-auto">
+                        <img src="/images/logo.png" alt="{{ $brand }}" width="480" height="448" class="h-20 w-auto">
                     </a>
                     <nav class="flex flex-wrap justify-center gap-x-8 gap-y-2">
                         @foreach ($nav as $label => $href)

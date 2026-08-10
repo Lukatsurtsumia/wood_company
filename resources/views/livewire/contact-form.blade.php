@@ -57,7 +57,7 @@ new class extends Component {
         // enquiry lands in the inbox looking like it came from yourself.
         Mail::raw($body, function ($mail) use ($data) {
             $mail->to(config('mail.contact_to'))
-                ->from(config('mail.from.address'), $data['name'].' (Toma)')
+                ->from(config('mail.from.address'), $data['name'].' (Arte)')
                 ->replyTo($data['email'], $data['name'])
                 ->subject($data['subject']
                     ? $data['name'].' - '.$data['subject']
