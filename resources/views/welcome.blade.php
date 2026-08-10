@@ -85,6 +85,12 @@
         <title>{{ $brand }} - {{ $role }}</title>
         <meta name="description" content="{{ $name }} - {{ $role }}, {{ $location }}. {{ __('Bespoke handmade furniture, joinery and fine antique restoration. Available for commissions.') }}">
 
+        <link rel="icon" href="/favicon.ico" sizes="any">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        <meta name="theme-color" content="#2b2620">
+
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
         <link href="https://fonts.bunny.net/css?family=cormorant-garamond:400,500,600,500i,600i|figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -119,7 +125,11 @@
         >
             <div class="mx-auto max-w-6xl px-6 lg:px-8">
                 <div class="flex h-20 items-center justify-between">
-                    <a href="#top" class="font-serif text-2xl font-semibold tracking-tight transition-colors" :class="scrolled ? 'text-espresso drop-shadow-none' : 'text-ivory [text-shadow:0_1px_6px_rgba(0,0,0,0.45)]'">{{ $brand }}</a>
+                    <a href="#top" class="flex items-center transition-transform hover:scale-[1.02]" aria-label="{{ $brand }}">
+                        <img src="/images/logo.png" alt="{{ $brand }}" width="560" height="492"
+                             class="h-12 w-auto transition-all duration-500"
+                             :class="scrolled ? '' : '[filter:drop-shadow(0_2px_6px_rgba(0,0,0,0.5))]'">
+                    </a>
 
                     <nav class="hidden items-center gap-9 md:flex" :class="scrolled ? '' : '[&_a]:[text-shadow:0_1px_6px_rgba(0,0,0,0.5)]'">
                         @foreach ($nav as $label => $href)
@@ -408,7 +418,9 @@
         <footer class="bg-espresso text-ivory/80">
             <div class="mx-auto max-w-6xl px-6 py-16 lg:px-8">
                 <div class="flex flex-col items-center gap-8 text-center">
-                    <a href="#top" class="font-serif text-3xl font-semibold text-ivory">{{ $brand }}</a>
+                    <a href="#top" aria-label="{{ $brand }}">
+                        <img src="/images/logo.png" alt="{{ $brand }}" width="560" height="492" class="h-20 w-auto">
+                    </a>
                     <nav class="flex flex-wrap justify-center gap-x-8 gap-y-2">
                         @foreach ($nav as $label => $href)
                             <a href="{{ $href }}" class="text-xs uppercase tracking-[0.2em] text-ivory/70 transition hover:text-gold">{{ __($label) }}</a>
