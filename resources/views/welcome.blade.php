@@ -2,7 +2,7 @@
     // ── Edit these to make the site your own ─────────────────────────────
     $name     = __('Artem Tsurtsumia');
     $brand    = 'Toma';
-    $role     = __('Master Woodworker & Furniture Maker');
+    $role     = __('Furniture, Door & Window Restoration');
     $email    = 'artemwurwumia1976@gmail.com';
     $phone    = '+33 6 35 93 26 84';
     $location = __('Nice, France');
@@ -83,7 +83,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{ $brand }} - {{ $role }}</title>
-        <meta name="description" content="{{ $name }} - {{ $role }}, {{ $location }}. {{ __('Bespoke handmade furniture, joinery and fine antique restoration. Available for commissions.') }}">
+        <meta name="description" content="{{ $name }} - {{ $role }}, {{ $location }}. {{ __('Restoring and modernising furniture, doors and windows - repaired, repainted and refinished to look better than before. Available for work.') }}">
 
         <link rel="icon" href="/favicon.ico" sizes="any">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -203,15 +203,15 @@
             @endforeach
 
             <div class="relative z-10 mx-auto flex h-full max-w-4xl flex-col items-center justify-center px-6 text-center lg:px-8">
-                <p class="mb-6 text-xs font-semibold uppercase tracking-[0.35em] text-brass-300 [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]">{{ __('Bespoke Furniture · :years Years of Craft', ['years' => $years]) }}</p>
+                <p class="mb-6 text-xs font-semibold uppercase tracking-[0.35em] text-brass-300 [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]">{{ __('Restoration & Renovation · :years Years of Craft', ['years' => $years]) }}</p>
                 <h1 class="font-serif text-5xl font-medium leading-[1.05] text-ivory [text-shadow:0_2px_20px_rgba(0,0,0,0.6)] sm:text-7xl">
-                    {!! __('Furniture, made to<br>last a lifetime.') !!}
+                    {!! __('Brought back to life,<br>better than before.') !!}
                 </h1>
                 <p class="mt-6 font-serif text-2xl italic text-brass-300 [text-shadow:0_1px_12px_rgba(0,0,0,0.75)] sm:text-3xl">
                     {{ __('The wood is a living being') }}
                 </p>
                 <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-ivory [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]">
-                    {{ __('I am :name - a master woodworker in :location. For over :years years I have shaped raw timber into furniture built to be used, loved and passed on.', ['name' => $name, 'location' => $location, 'years' => $years]) }}
+                    {{ __('I am :name - a restoration craftsman based in :location. For over :years years I have brought tired furniture, doors and windows back to life - repaired, repainted and refinished to look better than they did when new.', ['name' => $name, 'location' => $location, 'years' => $years]) }}
                 </p>
                 <div class="mt-9 flex items-center justify-center gap-8">
                     <a href="#work" class="rounded-full border border-ivory/50 px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-ivory transition hover:bg-ivory hover:text-espresso">
@@ -237,7 +237,7 @@
                 <div class="reveal mx-auto mb-16 max-w-2xl text-center">
                     <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-gold">{{ __('Selected Work') }}</p>
                     <h2 class="font-serif text-4xl font-medium text-espresso sm:text-5xl">{{ __('The Collection') }}</h2>
-                    <p class="mt-5 text-lg leading-relaxed text-mocha">{{ __('From bespoke builds to fine antique restoration - a gallery of recent work, each piece made or restored by hand.') }}</p>
+                    <p class="mt-5 text-lg leading-relaxed text-mocha">{{ __('From worn furniture to old doors and windows - a gallery of recent work, each piece restored, modernised and refinished by hand.') }}</p>
                     <div class="mt-8 flex items-center justify-center gap-3" aria-hidden="true">
                         <span class="h-px w-14 bg-gradient-to-r from-transparent to-gold/50"></span>
                         <span class="h-1.5 w-1.5 rotate-45 bg-gold"></span>
@@ -296,7 +296,7 @@
                 <div class="reveal mx-auto mb-16 max-w-2xl text-center">
                     <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-goldlight">{{ __('From Rough to Refined') }}</p>
                     <h2 class="font-serif text-4xl font-medium text-ivory sm:text-5xl">{{ __('Before & After') }}</h2>
-                    <p class="mt-5 text-lg leading-relaxed text-ivory/65">{{ __('Drag the handle to see each piece transformed - from raw timber and tired carcasses to finished, heirloom furniture.') }}</p>
+                    <p class="mt-5 text-lg leading-relaxed text-ivory/65">{{ __('Drag the handle to see each piece transformed - from worn and dated to repaired, repainted and looking better than before.') }}</p>
                     <div class="mt-8 flex items-center justify-center gap-3" aria-hidden="true">
                         <span class="h-px w-14 bg-gradient-to-r from-transparent to-goldlight/60"></span>
                         <span class="h-1.5 w-1.5 rotate-45 bg-goldlight"></span>
@@ -359,15 +359,15 @@
                 <div class="reveal">
                     <p class="mb-6 text-xs font-medium uppercase tracking-[0.35em] text-gold">{{ __('The Studio') }}</p>
                     <p class="font-serif text-3xl font-medium italic leading-snug text-espresso sm:text-4xl">
-                        &ldquo;{{ __('Every piece begins with a single log - and the patience to let its grain lead the way.') }}&rdquo;
+                        &ldquo;{{ __('Every piece begins worn or dated - and the patience to bring it back better than before.') }}&rdquo;
                     </p>
                     <div class="mt-8 space-y-4 leading-relaxed text-mocha">
-                        <p>{{ __('For over :years years I have worked from my own workshop in :location, shaping raw timber into furniture and joinery made to be used, loved and passed on. I work alone, with each client, from the first drawing to the final finish.', ['years' => $years, 'location' => $location]) }}</p>
-                        <p>{{ __('No flat-packs, no shortcuts - only honest materials and traditional craft.') }}</p>
+                        <p>{{ __('For over :years years I have worked from my own workshop in :location, restoring and modernising furniture, doors and windows - repairing, repainting and refinishing them to look better than new. I work alone, with each client, from the first look to the final coat.', ['years' => $years, 'location' => $location]) }}</p>
+                        <p>{{ __('No shortcuts - only careful repair, honest materials and a flawless finish.') }}</p>
                     </div>
 
                     <div class="mt-10 flex divide-x divide-hair border-y border-hair">
-                        @foreach ([$years.'+' => __('years at the bench'), '400+' => __('pieces made'), '100%' => __('by hand')] as $stat => $label)
+                        @foreach ([$years.'+' => __('years at the bench'), '400+' => __('pieces restored'), '100%' => __('by hand')] as $stat => $label)
                             <div class="flex-1 py-5 pr-6 first:pl-0 [&:not(:first-child)]:pl-6">
                                 <p class="font-serif text-3xl font-medium text-espresso">{{ $stat }}</p>
                                 <p class="mt-1 text-xs uppercase tracking-widest text-mocha">{{ $label }}</p>
@@ -386,8 +386,8 @@
                 <div class="grid grid-cols-1 gap-14 lg:grid-cols-2 lg:gap-20">
                     <div class="reveal">
                         <p class="mb-5 text-xs font-medium uppercase tracking-[0.35em] text-gold">{{ __('Enquiries') }}</p>
-                        <h2 class="font-serif text-4xl font-medium leading-tight text-espresso sm:text-5xl">{!! __('Commission<br>a piece.') !!}</h2>
-                        <p class="mt-6 max-w-md text-lg leading-relaxed text-mocha">{{ __('Tell me a little about what you have in mind and I will reply with some initial thoughts and a rough estimate - usually within a day or two.') }}</p>
+                        <h2 class="font-serif text-4xl font-medium leading-tight text-espresso sm:text-5xl">{!! __('Bring it back<br>to life.') !!}</h2>
+                        <p class="mt-6 max-w-md text-lg leading-relaxed text-mocha">{{ __('Tell me about the furniture, door or window you would like restored and I will reply with some initial thoughts and a rough estimate - usually within a day or two.') }}</p>
 
                         <div class="mt-10 space-y-4 border-t border-hair pt-8 text-sm">
                             <div class="flex justify-between gap-4">
