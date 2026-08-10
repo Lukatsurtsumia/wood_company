@@ -125,12 +125,8 @@
         >
             <div class="mx-auto max-w-6xl px-6 lg:px-8">
                 <div class="flex h-20 items-center justify-between">
-                    <a href="#top" class="flex items-center gap-3 transition-transform hover:scale-[1.02]" aria-label="{{ $brand }}">
-                        <img src="/images/logo.png" alt="" aria-hidden="true" width="560" height="536"
-                             class="h-14 w-auto transition-all duration-500"
-                             :class="scrolled ? '' : '[filter:drop-shadow(0_2px_6px_rgba(0,0,0,0.5))]'">
-                        <span class="font-serif text-3xl font-semibold tracking-tight transition-colors"
-                              :class="scrolled ? 'text-espresso' : 'text-ivory [text-shadow:0_1px_6px_rgba(0,0,0,0.5)]'">{{ $brand }}</span>
+                    <a href="#top" class="flex items-center transition-transform hover:scale-[1.02]" aria-label="{{ $brand }}">
+                        <img src="/images/logo.png" alt="{{ $brand }}" width="480" height="437" class="h-16 w-auto">
                     </a>
 
                     <nav class="hidden items-center gap-9 md:flex" :class="scrolled ? '' : '[&_a]:[text-shadow:0_1px_6px_rgba(0,0,0,0.5)]'">
@@ -420,9 +416,8 @@
         <footer class="bg-espresso text-ivory/80">
             <div class="mx-auto max-w-6xl px-6 py-16 lg:px-8">
                 <div class="flex flex-col items-center gap-8 text-center">
-                    <a href="#top" class="flex flex-col items-center gap-3" aria-label="{{ $brand }}">
-                        <img src="/images/logo.png" alt="" aria-hidden="true" width="560" height="536" class="h-16 w-auto">
-                        <span class="font-serif text-3xl font-semibold text-ivory">{{ $brand }}</span>
+                    <a href="#top" aria-label="{{ $brand }}">
+                        <img src="/images/logo.png" alt="{{ $brand }}" width="480" height="437" class="h-20 w-auto">
                     </a>
                     <nav class="flex flex-wrap justify-center gap-x-8 gap-y-2">
                         @foreach ($nav as $label => $href)
