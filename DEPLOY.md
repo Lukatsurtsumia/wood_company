@@ -50,31 +50,28 @@ LOG_CHANNEL=stderr      # so errors show in Coolify's log viewer, not a dead fil
 LOG_LEVEL=error
 
 MAIL_MAILER=smtp
-MAIL_SCHEME=smtp
-MAIL_HOST=smtp.gmail.com
+MAIL_HOST=smtp.resend.com
 MAIL_PORT=587
-MAIL_USERNAME=artemwurwumia1976@gmail.com
-MAIL_PASSWORD=      # Gmail App Password, 16 chars, no spaces
-MAIL_FROM_ADDRESS=artemwurwumia1976@gmail.com
-MAIL_FROM_NAME=Wood Agency
+MAIL_USERNAME=resend
+MAIL_PASSWORD=      # Resend API key (re_...)
+MAIL_FROM_ADDRESS=contact@arte-company.com
+MAIL_FROM_NAME=Arte
 
 CONTACT_TO=artemwurwumia1976@gmail.com
 ```
 
-### Gmail App Password
+### Email: Resend (sending) + Cloudflare Routing (receiving)
 
-1. Turn on 2-Step Verification: <https://myaccount.google.com/security>
-2. Create an App Password: <https://myaccount.google.com/apppasswords>
-3. Paste the 16 characters into `MAIL_PASSWORD` with no spaces.
-
-Mail is sent **from** the Gmail account with the visitor's address as
-**Reply-To**, so hitting reply answers the client directly.
-
-Because Gmail forces the `From` to be the authenticated account, enquiries
-arrive as `artemwurwumia1976@gmail.com` mailing itself. Gmail is suspicious of
-that, so the enquiry is sent as `multipart/alternative` (HTML **and** plain
-text) to keep it out of Spam. If enquiries ever go missing, check Spam first
-and mark "Not spam" - that trains the filter.
+- **Receiving** `contact@arte-company.com`: Cloudflare Email Routing forwards it
+  to the Gmail inbox (root-domain MX -> `route1/2/3.mx.cloudflare.net`).
+- **Sending** the enquiry form: via **Resend**. Verify `arte-company.com` in
+  Resend and add its DNS records in Cloudflare (all **DNS only / grey cloud**):
+  DKIM `resend._domainkey`, and the `send` subdomain MX + SPF TXT. These live on
+  a subdomain, so they do **not** conflict with the root Email-Routing MX.
+- The form sends **from** `contact@arte-company.com` with the visitor as
+  **Reply-To**, and delivers **to** `CONTACT_TO` (the Gmail). Because Resend
+  signs with DKIM/SPF, the mail authenticates and is not the old
+  Gmail-mailing-itself pattern - so it stays out of Spam.
 
 ## 4. Domain + DNS
 

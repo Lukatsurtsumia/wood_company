@@ -3,7 +3,7 @@
     $name     = __('Artem Tsurtsumia');
     $brand    = 'Arte';
     $role     = __('Furniture, Door & Window Restoration');
-    $email    = 'artemwurwumia1976@gmail.com';
+    $email    = 'contact@arte-company.com';
     $phone    = '+33 6 35 93 26 84';
     $location = __('Nice, France');
     $years    = 25;
