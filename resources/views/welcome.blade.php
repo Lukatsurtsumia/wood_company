@@ -204,7 +204,7 @@
 
             <div class="relative z-10 mx-auto flex h-full max-w-4xl flex-col items-center justify-center px-6 text-center lg:px-8">
                 <p class="mb-6 text-xs font-semibold uppercase tracking-[0.35em] text-brass-300 [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]">{{ __('Restoration & Renovation · :years Years of Craft', ['years' => $years]) }}</p>
-                <h1 class="font-serif text-5xl font-medium leading-[1.05] text-ivory [text-shadow:0_2px_20px_rgba(0,0,0,0.6)] sm:text-7xl">
+                <h1 class="font-serif text-[2.6rem] font-medium leading-[1.05] text-ivory [text-shadow:0_2px_20px_rgba(0,0,0,0.6)] sm:text-6xl md:text-7xl">
                     {!! __('Brought back to life,<br>better than before.') !!}
                 </h1>
                 <p class="mt-6 font-serif text-2xl italic text-brass-300 [text-shadow:0_1px_12px_rgba(0,0,0,0.75)] sm:text-3xl">
@@ -213,7 +213,7 @@
                 <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-ivory [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]">
                     {{ __('I am :name - a restoration craftsman based in :location. For over :years years I have brought tired furniture, doors and windows back to life - repaired, repainted and refinished to look better than they did when new.', ['name' => $name, 'location' => $location, 'years' => $years]) }}
                 </p>
-                <div class="mt-9 flex items-center justify-center gap-8">
+                <div class="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
                     <a href="#work" class="rounded-full border border-ivory/50 px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-ivory transition hover:bg-ivory hover:text-espresso">
                         {{ __('View the Collection') }}
                     </a>
@@ -232,12 +232,12 @@
         </section>
 
         {{-- ───────────────────────── Work / Collection ───────────────────────── --}}
-        <section id="work" class="border-t border-hair bg-ivory py-24 lg:py-32">
+        <section id="work" class="border-t border-hair bg-ivory py-16 sm:py-24 lg:py-32">
             <div class="mx-auto max-w-6xl px-6 lg:px-8">
-                <div class="reveal mx-auto mb-16 max-w-2xl text-center">
+                <div class="reveal mx-auto mb-12 max-w-2xl text-center sm:mb-16">
                     <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-gold">{{ __('Selected Work') }}</p>
                     <h2 class="font-serif text-4xl font-medium text-espresso sm:text-5xl">{{ __('The Collection') }}</h2>
-                    <p class="mt-5 text-lg leading-relaxed text-mocha">{{ __('From worn furniture to old doors and windows - a gallery of recent work, each piece restored, modernised and refinished by hand.') }}</p>
+                    <p class="mt-5 text-base leading-relaxed sm:text-lg text-mocha">{{ __('From worn furniture to old doors and windows - a gallery of recent work, each piece restored, modernised and refinished by hand.') }}</p>
                     <div class="mt-8 flex items-center justify-center gap-3" aria-hidden="true">
                         <span class="h-px w-14 bg-gradient-to-r from-transparent to-gold/50"></span>
                         <span class="h-1.5 w-1.5 rotate-45 bg-gold"></span>
@@ -245,42 +245,46 @@
                     </div>
                 </div>
 
-                {{-- Masonry gallery - each folder in public/images/gallery/ is a card here --}}
-                <div class="grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 xl:grid-cols-4">
+                {{-- Gallery - each folder in public/images/gallery/ is a card here --}}
+                <div class="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-12 md:grid-cols-3 xl:grid-cols-4">
                     @foreach ($gallery as $p)
                         <figure class="group">
-                            @if ($p['images']->count() > 1)
-                                {{-- multi-photo piece → mini slideshow --}}
-                                <div x-data="{ i: 0, n: {{ $p['images']->count() }}, t: null,
-                                               play(){ this.t = setInterval(() => this.i = (this.i + 1) % this.n, 3200); },
-                                               stop(){ clearInterval(this.t); } }"
-                                     x-init="play()" @mouseenter="stop()" @mouseleave="play()"
-                                     class="relative aspect-[4/5] overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/[0.08] transition-shadow duration-500 group-hover:shadow-[0_22px_45px_-24px_rgba(43,38,32,0.45)]">
-                                    @foreach ($p['images'] as $k => $img)
-                                        <img src="{{ $img }}" alt="{{ __($p['title']) }}" loading="lazy"
-                                             x-show="i === {{ $k }}"
-                                             x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                                             x-transition:leave="transition ease-in duration-700" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-                                             class="absolute inset-0 h-full w-full object-cover">
-                                    @endforeach
-                                    <div class="absolute inset-x-0 bottom-3 z-10 flex justify-center gap-1.5">
+                            {{-- gilded frame: porcelain mat + thin gold hairline, deepens on hover --}}
+                            <div class="rounded-[4px] bg-porcelain p-1.5 ring-1 ring-gold/25 transition-all duration-500 group-hover:ring-gold/60 group-hover:shadow-[0_22px_45px_-24px_rgba(43,38,32,0.45)]">
+                                @if ($p['images']->count() > 1)
+                                    {{-- multi-photo piece → mini slideshow --}}
+                                    <div x-data="{ i: 0, n: {{ $p['images']->count() }}, t: null,
+                                                   play(){ this.t = setInterval(() => this.i = (this.i + 1) % this.n, 3200); },
+                                                   stop(){ clearInterval(this.t); } }"
+                                         x-init="play()" @mouseenter="stop()" @mouseleave="play()"
+                                         class="relative aspect-[4/5] overflow-hidden rounded-[2px] bg-hair">
                                         @foreach ($p['images'] as $k => $img)
-                                            <button type="button" @click="i = {{ $k }}" aria-label="Photo {{ $k + 1 }}"
-                                                    class="h-1.5 rounded-full transition-all duration-300"
-                                                    :class="i === {{ $k }} ? 'w-4 bg-ivory' : 'w-1.5 bg-ivory/60'"></button>
+                                            <img src="{{ $img }}" alt="{{ __($p['title']) }}" loading="lazy"
+                                                 x-show="i === {{ $k }}"
+                                                 x-transition:enter="transition ease-out duration-700" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                                                 x-transition:leave="transition ease-in duration-700" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                                                 class="absolute inset-0 h-full w-full object-cover">
                                         @endforeach
+                                        <div class="absolute inset-x-0 bottom-3 z-10 flex justify-center gap-1.5">
+                                            @foreach ($p['images'] as $k => $img)
+                                                <button type="button" @click="i = {{ $k }}" aria-label="Photo {{ $k + 1 }}"
+                                                        class="h-1.5 rounded-full transition-all duration-300"
+                                                        :class="i === {{ $k }} ? 'w-4 bg-ivory' : 'w-1.5 bg-ivory/60'"></button>
+                                            @endforeach
+                                        </div>
+                                        <span class="pointer-events-none absolute right-3 top-3 rounded-full bg-espresso/70 px-2.5 py-0.5 text-[10px] font-semibold tracking-wide text-ivory ring-1 ring-gold/30">{{ __(':count photos', ['count' => $p['images']->count()]) }}</span>
                                     </div>
-                                    <span class="pointer-events-none absolute right-3 top-3 rounded-full bg-espresso/60 px-2 py-0.5 text-[10px] font-semibold text-ivory">{{ __(':count photos', ['count' => $p['images']->count()]) }}</span>
-                                </div>
-                            @else
-                                <div class="aspect-[4/5] overflow-hidden rounded-sm bg-hair ring-1 ring-espresso/[0.08] transition-shadow duration-500 group-hover:shadow-[0_22px_45px_-24px_rgba(43,38,32,0.45)]">
-                                    <img src="{{ $p['images'][0] }}" alt="{{ __($p['title']) }}" loading="lazy"
-                                         class="h-full w-full object-cover transition duration-[1400ms] ease-out group-hover:scale-[1.05]">
-                                </div>
-                            @endif
+                                @else
+                                    <div class="aspect-[4/5] overflow-hidden rounded-[2px] bg-hair">
+                                        <img src="{{ $p['images'][0] }}" alt="{{ __($p['title']) }}" loading="lazy"
+                                             class="h-full w-full object-cover transition duration-[1400ms] ease-out group-hover:scale-[1.05]">
+                                    </div>
+                                @endif
+                            </div>
                             <figcaption class="mt-4 text-center">
-                                <span class="mx-auto mb-2 block h-px w-6 bg-gold/60 transition-all duration-500 group-hover:w-12"></span>
-                                <h3 class="font-serif text-lg font-medium tracking-wide text-espresso transition-colors duration-300 group-hover:text-gold">{{ __($p['title']) }}</h3>
+                                <span class="mx-auto mb-2.5 block h-px w-6 bg-gold/60 transition-all duration-500 group-hover:w-12"></span>
+                                <p class="mb-1 text-[11px] font-medium uppercase tracking-[0.3em] text-gold">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</p>
+                                <h3 class="font-serif text-base font-medium tracking-wide text-espresso transition-colors duration-300 group-hover:text-gold sm:text-lg">{{ __($p['title']) }}</h3>
                             </figcaption>
                         </figure>
                     @endforeach
@@ -289,14 +293,14 @@
         </section>
 
         {{-- ───────────────────────── Before & After ───────────────────────── --}}
-        <section id="restoration" class="relative overflow-hidden bg-noir py-24 lg:py-32">
+        <section id="restoration" class="relative overflow-hidden bg-noir py-16 sm:py-24 lg:py-32">
             {{-- soft warm glow for depth --}}
             <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(168,135,90,0.16),transparent_60%)]"></div>
             <div class="relative mx-auto max-w-6xl px-6 lg:px-8">
-                <div class="reveal mx-auto mb-16 max-w-2xl text-center">
+                <div class="reveal mx-auto mb-12 max-w-2xl text-center sm:mb-16">
                     <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-goldlight">{{ __('From Rough to Refined') }}</p>
                     <h2 class="font-serif text-4xl font-medium text-ivory sm:text-5xl">{{ __('Before & After') }}</h2>
-                    <p class="mt-5 text-lg leading-relaxed text-ivory/65">{{ __('Drag the handle to see each piece transformed - from worn and dated to repaired, repainted and looking better than before.') }}</p>
+                    <p class="mt-5 text-base leading-relaxed sm:text-lg text-ivory/65">{{ __('Drag the handle to see each piece transformed - from worn and dated to repaired, repainted and looking better than before.') }}</p>
                     <div class="mt-8 flex items-center justify-center gap-3" aria-hidden="true">
                         <span class="h-px w-14 bg-gradient-to-r from-transparent to-goldlight/60"></span>
                         <span class="h-1.5 w-1.5 rotate-45 bg-goldlight"></span>
@@ -348,7 +352,7 @@
         </section>
 
         {{-- ───────────────────────── Studio / About ───────────────────────── --}}
-        <section id="about" class="border-t border-hair bg-porcelain py-24 lg:py-32">
+        <section id="about" class="border-t border-hair bg-porcelain py-16 sm:py-24 lg:py-32">
             <div class="mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
                 <div class="reveal">
                     <div class="overflow-hidden rounded-sm bg-hair">
@@ -368,7 +372,7 @@
 
                     <div class="mt-10 flex divide-x divide-hair border-y border-hair">
                         @foreach ([$years.'+' => __('years at the bench'), '400+' => __('pieces restored'), '100%' => __('by hand')] as $stat => $label)
-                            <div class="flex-1 py-5 pr-6 first:pl-0 [&:not(:first-child)]:pl-6">
+                            <div class="flex-1 py-5 pr-3 first:pl-0 [&:not(:first-child)]:pl-3 sm:pr-6 sm:[&:not(:first-child)]:pl-6">
                                 <p class="font-serif text-3xl font-medium text-espresso">{{ $stat }}</p>
                                 <p class="mt-1 text-xs uppercase tracking-widest text-mocha">{{ $label }}</p>
                             </div>
@@ -381,7 +385,7 @@
         </section>
 
         {{-- ───────────────────────── Contact ───────────────────────── --}}
-        <section id="contact" class="border-t border-hair bg-ivory py-24 lg:py-32">
+        <section id="contact" class="border-t border-hair bg-ivory py-16 sm:py-24 lg:py-32">
             <div class="mx-auto max-w-6xl px-6 lg:px-8">
                 <div class="grid grid-cols-1 gap-14 lg:grid-cols-2 lg:gap-20">
                     <div class="reveal">
@@ -392,7 +396,7 @@
                         <div class="mt-10 space-y-4 border-t border-hair pt-8 text-sm">
                             <div class="flex justify-between gap-4">
                                 <span class="uppercase tracking-widest text-mocha">{{ __('Email') }}</span>
-                                <a href="mailto:{{ $email }}" class="text-espresso hover:text-gold">{{ $email }}</a>
+                                <a href="mailto:{{ $email }}" class="break-all text-right text-espresso hover:text-gold">{{ $email }}</a>
                             </div>
                             <div class="flex justify-between gap-4">
                                 <span class="uppercase tracking-widest text-mocha">{{ __('Phone') }}</span>
