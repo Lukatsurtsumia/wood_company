@@ -52,17 +52,24 @@ new class extends Component {
             ."\n\n---\nReply to this email to answer "
             .$data['name']." directly ({$data['email']}).";
 
-        // Gmail requires the From address to be the authenticated account, but
-        // the display NAME is free - so show the visitor there. Otherwise every
-        // enquiry lands in the inbox looking like it came from yourself.
-        Mail::raw($body, function ($mail) use ($data) {
-            $mail->to(config('mail.contact_to'))
-                ->from(config('mail.from.address'), $data['name'].' (Arte)')
-                ->replyTo($data['email'], $data['name'])
-                ->subject($data['subject']
-                    ? $data['name'].' - '.$data['subject']
-                    : $data['name'].' - website enquiry');
-        });
+        try {
+            // Sends from the site address (Resend) with the visitor as Reply-To,
+            // delivered to CONTACT_TO. Wrapped so a mail failure never throws a
+            // raw 500 at the visitor - they get a friendly fallback instead.
+            Mail::raw($body, function ($mail) use ($data) {
+                $mail->to(config('mail.contact_to'))
+                    ->from(config('mail.from.address'), $data['name'].' (Arte)')
+                    ->replyTo($data['email'], $data['name'])
+                    ->subject($data['subject']
+                        ? $data['name'].' - '.$data['subject']
+                        : $data['name'].' - website enquiry');
+            });
+        } catch (\Throwable $e) {
+            report($e);
+            $this->addError('send', __('Sorry - your message could not be sent just now. Please email me directly at :email.', ['email' => config('mail.from.address')]));
+
+            return;
+        }
 
         $this->reset('name', 'email', 'subject', 'message');
         $this->sent = true;
@@ -85,7 +92,11 @@ new class extends Component {
     @else
         <form wire:submit="submit" class="space-y-5" novalidate>
             @error('throttle')
-                <div class="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700" role="alert">{{ $message }}</div>
+                <div class="rounded-sm bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700" role="alert">{{ $message }}</div>
+            @enderror
+
+            @error('send')
+                <div class="rounded-sm bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700" role="alert">{{ $message }}</div>
             @enderror
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
