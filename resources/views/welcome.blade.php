@@ -47,6 +47,11 @@
         ->filter(fn ($p) => $p['images']->isNotEmpty())
         ->values();
 
+    // Flat payload the lightbox reads (titles already translated for this locale).
+    $galleryJson = $gallery
+        ->map(fn ($p) => ['title' => __($p['title']), 'images' => $p['images']->values()])
+        ->values();
+
     // ── BEFORE & AFTER (folder-driven) ───────────────────────────────────
     // Drop matching pairs in public/images/before-after/ named:
     //   <sort>-<name>__before.jpg   and   <sort>-<name>__after.jpg
@@ -232,7 +237,21 @@
         </section>
 
         {{-- ───────────────────────── Work / Collection ───────────────────────── --}}
-        <section id="work" class="border-t border-hair bg-ivory py-16 sm:py-24 lg:py-32">
+        <section id="work" class="border-t border-hair bg-ivory py-16 sm:py-24 lg:py-32"
+            x-data="{
+                items: @js($galleryJson),
+                open: false, piece: 0, idx: 0, sx: 0,
+                get cur(){ return this.items[this.piece] ?? { title:'', images:[] } },
+                get many(){ return this.cur.images.length > 1 },
+                show(p){ this.piece = p; this.idx = 0; this.open = true; document.body.style.overflow = 'hidden'; $nextTick(() => this.$refs.closeBtn?.focus()); },
+                hide(){ this.open = false; document.body.style.overflow = ''; },
+                next(){ if (this.many) this.idx = (this.idx + 1) % this.cur.images.length },
+                prev(){ if (this.many) this.idx = (this.idx - 1 + this.cur.images.length) % this.cur.images.length },
+                swipe(e){ const dx = e.changedTouches[0].clientX - this.sx; if (Math.abs(dx) > 45) dx < 0 ? this.next() : this.prev(); }
+            }"
+            @keydown.escape.window="open && hide()"
+            @keydown.arrow-right.window="open && next()"
+            @keydown.arrow-left.window="open && prev()">
             <div class="mx-auto max-w-6xl px-6 lg:px-8">
                 <div class="reveal mx-auto mb-12 max-w-2xl text-center sm:mb-16">
                     <p class="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-gold">{{ __('Selected Work') }}</p>
@@ -265,9 +284,19 @@
                                                  x-transition:leave="transition ease-in duration-700" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                                                  class="absolute inset-0 h-full w-full object-cover">
                                         @endforeach
+                                        {{-- click target → lightbox (sits under the dots, which are z-10) --}}
+                                        <button type="button" @click="show({{ $loop->index }})"
+                                                class="absolute inset-0 z-[5] cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                                                aria-label="{{ __('View :title', ['title' => __($p['title'])]) }}">
+                                            <span class="pointer-events-none absolute inset-0 flex items-center justify-center bg-espresso/0 opacity-0 transition duration-500 group-hover:bg-espresso/25 group-hover:opacity-100">
+                                                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-ivory/95 text-espresso shadow-lg">
+                                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg>
+                                                </span>
+                                            </span>
+                                        </button>
                                         <div class="absolute inset-x-0 bottom-3 z-10 flex justify-center gap-1.5">
                                             @foreach ($p['images'] as $k => $img)
-                                                <button type="button" @click="i = {{ $k }}" aria-label="Photo {{ $k + 1 }}"
+                                                <button type="button" @click.stop="i = {{ $k }}" aria-label="Photo {{ $k + 1 }}"
                                                         class="h-1.5 rounded-full transition-all duration-300"
                                                         :class="i === {{ $k }} ? 'w-4 bg-ivory' : 'w-1.5 bg-ivory/60'"></button>
                                             @endforeach
@@ -275,9 +304,18 @@
                                         <span class="pointer-events-none absolute right-3 top-3 rounded-full bg-espresso/70 px-2.5 py-0.5 text-[10px] font-semibold tracking-wide text-ivory ring-1 ring-gold/30">{{ __(':count photos', ['count' => $p['images']->count()]) }}</span>
                                     </div>
                                 @else
-                                    <div class="aspect-[4/5] overflow-hidden rounded-[2px] bg-hair">
+                                    <div class="relative aspect-[4/5] overflow-hidden rounded-[2px] bg-hair">
                                         <img src="{{ $p['images'][0] }}" alt="{{ __($p['title']) }}" loading="lazy"
                                              class="h-full w-full object-cover transition duration-[1400ms] ease-out group-hover:scale-[1.05]">
+                                        <button type="button" @click="show({{ $loop->index }})"
+                                                class="absolute inset-0 z-[5] cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                                                aria-label="{{ __('View :title', ['title' => __($p['title'])]) }}">
+                                            <span class="pointer-events-none absolute inset-0 flex items-center justify-center bg-espresso/0 opacity-0 transition duration-500 group-hover:bg-espresso/25 group-hover:opacity-100">
+                                                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-ivory/95 text-espresso shadow-lg">
+                                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m20 20-3.5-3.5M11 8v6M8 11h6"/></svg>
+                                                </span>
+                                            </span>
+                                        </button>
                                     </div>
                                 @endif
                             </div>
@@ -288,6 +326,64 @@
                             </figcaption>
                         </figure>
                     @endforeach
+                </div>
+            </div>
+
+            {{-- ── Lightbox: quick preview, swipe/arrow through a piece's photos ── --}}
+            <div x-show="open" x-cloak
+                 x-transition.opacity.duration.250ms
+                 @click.self="hide()"
+                 class="fixed inset-0 z-[110] flex flex-col bg-noir/95 p-4 backdrop-blur-sm sm:p-8"
+                 role="dialog" aria-modal="true" :aria-label="cur.title">
+
+                {{-- top bar --}}
+                <div class="mx-auto flex w-full max-w-5xl flex-none items-center justify-between gap-4 pb-3">
+                    <div class="min-w-0">
+                        <p class="truncate font-serif text-lg text-ivory sm:text-xl" x-text="cur.title"></p>
+                        <p class="mt-0.5 text-[11px] uppercase tracking-[0.25em] text-gold" x-show="many">
+                            <span x-text="idx + 1"></span> / <span x-text="cur.images.length"></span>
+                        </p>
+                    </div>
+                    <button type="button" x-ref="closeBtn" @click="hide()"
+                            class="flex h-10 w-10 flex-none items-center justify-center rounded-full border border-ivory/25 text-ivory transition hover:border-gold hover:text-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                            aria-label="{{ __('Close') }}">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+                    </button>
+                </div>
+
+                {{-- stage --}}
+                <div class="relative flex min-h-0 flex-1 items-center justify-center"
+                     @touchstart.passive="sx = $event.changedTouches[0].clientX"
+                     @touchend.passive="swipe($event)">
+                    <img :src="cur.images[idx]" :alt="cur.title" :key="piece + '-' + idx"
+                         class="max-h-full max-w-full rounded-sm object-contain shadow-[0_30px_70px_-30px_rgba(0,0,0,0.9)]">
+
+                    <template x-if="many">
+                        <button type="button" @click="prev()"
+                                class="absolute left-0 flex h-11 w-11 items-center justify-center rounded-full bg-espresso/70 text-ivory transition hover:bg-espresso hover:text-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-gold sm:left-2"
+                                aria-label="{{ __('Previous') }}">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg>
+                        </button>
+                    </template>
+                    <template x-if="many">
+                        <button type="button" @click="next()"
+                                class="absolute right-0 flex h-11 w-11 items-center justify-center rounded-full bg-espresso/70 text-ivory transition hover:bg-espresso hover:text-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-gold sm:right-2"
+                                aria-label="{{ __('Next') }}">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </template>
+                </div>
+
+                {{-- thumbnails / dots --}}
+                <div class="mx-auto mt-3 flex w-full max-w-5xl flex-none items-center justify-center gap-2" x-show="many">
+                    <template x-for="(src, k) in cur.images" :key="k">
+                        <button type="button" @click="idx = k"
+                                class="h-12 w-12 overflow-hidden rounded-sm ring-1 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+                                :class="idx === k ? 'ring-gold opacity-100' : 'ring-ivory/20 opacity-55 hover:opacity-85'"
+                                :aria-label="'{{ __('Photo') }} ' + (k + 1)">
+                            <img :src="src" alt="" class="h-full w-full object-cover">
+                        </button>
+                    </template>
                 </div>
             </div>
         </section>
