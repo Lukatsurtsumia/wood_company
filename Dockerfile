@@ -52,6 +52,9 @@ COPY --from=assets /app/public/build ./public/build
 # Must come after "COPY . ." so the optimised photos replace the full-size ones.
 COPY --from=images /src/images ./public/images
 
+# Cache headers for static media (see the file for details).
+COPY docker/nginx/20-static-cache.conf /opt/docker/etc/nginx/vhost.common.d/
+
 # Storage dirs must exist and be writable by the web user.
 RUN mkdir -p storage/framework/cache storage/framework/sessions \
              storage/framework/views storage/logs bootstrap/cache \
