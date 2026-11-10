@@ -8,6 +8,41 @@
     $location = __('Nice, France');
     $years    = 25;
 
+    // ── SEO ──────────────────────────────────────────────────────────────
+    // Canonical production URL (keep absolute so canonical/OG/schema are valid
+    // regardless of the request host). Update if the domain ever changes.
+    $siteUrl  = 'https://arte-company.com';
+    $metaDesc = __('Restoring and modernising furniture, doors and windows - repaired, repainted and refinished to look better than before. Available for work.');
+    $ogImage  = $siteUrl.'/images/studio.jpg';
+
+    // LocalBusiness structured data (schema.org) so Google understands this is
+    // a real Nice-based restoration business for local search + the map pack.
+    $jsonLd = [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'HomeAndConstructionBusiness',
+        'name'        => $brand,
+        'image'       => $ogImage,
+        'url'         => $siteUrl,
+        'telephone'   => $phone,
+        'email'       => $email,
+        'description' => $metaDesc,
+        'founder'     => $name,
+        'knowsLanguage' => ['en', 'fr', 'ru'],
+        'address'     => [
+            '@type'           => 'PostalAddress',
+            'addressLocality' => 'Nice',
+            'addressRegion'   => "Provence-Alpes-Côte d'Azur",
+            'addressCountry'  => 'FR',
+        ],
+        'areaServed'  => ['@type' => 'City', 'name' => 'Nice'],
+        'openingHoursSpecification' => [
+            '@type'     => 'OpeningHoursSpecification',
+            'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+            'opens'     => '08:00',
+            'closes'    => '18:30',
+        ],
+    ];
+
     // The About portrait uses a real photo (the maker at work).
     $aboutImg = '/images/studio.jpg';
 
@@ -87,8 +122,28 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>{{ $brand }} - {{ $role }}</title>
-        <meta name="description" content="{{ $name }} - {{ $role }}, {{ $location }}. {{ __('Restoring and modernising furniture, doors and windows - repaired, repainted and refinished to look better than before. Available for work.') }}">
+        <title>{{ $brand }} - {{ $role }} | {{ $location }}</title>
+        <meta name="description" content="{{ $name }} - {{ $role }}, {{ $location }}. {{ $metaDesc }}">
+        <link rel="canonical" href="{{ $siteUrl }}">
+        <meta name="robots" content="index, follow, max-image-preview:large">
+
+        {{-- Open Graph (Facebook, LinkedIn, iMessage, etc.) --}}
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="{{ $brand }}">
+        <meta property="og:title" content="{{ $brand }} - {{ $role }} | {{ $location }}">
+        <meta property="og:description" content="{{ $metaDesc }}">
+        <meta property="og:url" content="{{ $siteUrl }}">
+        <meta property="og:image" content="{{ $ogImage }}">
+        <meta property="og:locale" content="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+        {{-- Twitter / X card --}}
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $brand }} - {{ $role }} | {{ $location }}">
+        <meta name="twitter:description" content="{{ $metaDesc }}">
+        <meta name="twitter:image" content="{{ $ogImage }}">
+
+        {{-- Structured data: LocalBusiness --}}
+        <script type="application/ld+json">{!! json_encode($jsonLd, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
 
         <link rel="icon" href="/favicon.ico" sizes="any">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
