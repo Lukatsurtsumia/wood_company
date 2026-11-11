@@ -14,6 +14,7 @@
     $siteUrl  = 'https://arte-company.com';
     $metaDesc = __('Restoring and modernising furniture, doors and windows - repaired, repainted and refinished to look better than before. Available for work.');
     $ogImage  = $siteUrl.'/images/studio.jpg';
+    $googleUrl = 'https://share.google/VGWRc32chaPFQJYvK'; // Google Business Profile (share link)
 
     // LocalBusiness structured data (schema.org) so Google understands this is
     // a real Nice-based restoration business for local search + the map pack.
@@ -23,6 +24,7 @@
         'name'        => $brand,
         'image'       => $ogImage,
         'url'         => $siteUrl,
+        'sameAs'      => $googleUrl,
         'telephone'   => $phone,
         'email'       => $email,
         'description' => $metaDesc,
@@ -557,6 +559,10 @@
                                 <span class="uppercase tracking-widest text-mocha">{{ __('Workshop') }}</span>
                                 <span class="text-espresso">{{ $location }}</span>
                             </div>
+                            <div class="flex justify-between gap-4">
+                                <span class="uppercase tracking-widest text-mocha">{{ __('Google') }}</span>
+                                <a href="{{ $googleUrl }}" target="_blank" rel="noopener" class="text-right text-espresso hover:text-gold">{{ __('View & review on Google') }}</a>
+                            </div>
                         </div>
                     </div>
 
@@ -578,6 +584,7 @@
                         @foreach ($nav as $label => $href)
                             <a href="{{ $href }}" class="text-xs uppercase tracking-[0.2em] text-ivory/70 transition hover:text-gold">{{ __($label) }}</a>
                         @endforeach
+                        <a href="{{ $googleUrl }}" target="_blank" rel="noopener" class="text-xs uppercase tracking-[0.2em] text-ivory/70 transition hover:text-gold">Google</a>
                     </nav>
                 </div>
 
