@@ -155,7 +155,16 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>{{ $brand }} - {{ $role }} | {{ $location }}</title>
         <meta name="description" content="{{ $name }} - {{ $role }}, {{ $location }}. {{ $metaDesc }}">
-        <link rel="canonical" href="{{ $siteUrl }}">
+        @php
+            // English lives at the bare domain, the others at /fr and /ru.
+            $localeUrl = fn (string $l) => $l === 'en' ? $siteUrl : $siteUrl.'/'.$l;
+        @endphp
+        <link rel="canonical" href="{{ $localeUrl(app()->getLocale()) }}">
+        {{-- Tell Google these three pages are the same content in other languages. --}}
+        @foreach (\App\Http\Middleware\SetLocale::SUPPORTED as $alt)
+            <link rel="alternate" hreflang="{{ $alt }}" href="{{ $localeUrl($alt) }}">
+        @endforeach
+        <link rel="alternate" hreflang="x-default" href="{{ $siteUrl }}">
         <meta name="robots" content="index, follow, max-image-preview:large">
 
         {{-- Open Graph (Facebook, LinkedIn, iMessage, etc.) --}}
@@ -233,7 +242,7 @@
                                 @if (app()->getLocale() === $code)
                                     <span class="font-semibold text-gold">{{ $short }}</span>
                                 @else
-                                    <a href="{{ route('lang.switch', $code) }}" class="transition-colors"
+                                    <a href="{{ $code === 'en' ? url('/') : url('/'.$code) }}" hreflang="{{ $code }}" class="transition-colors"
                                        :class="scrolled ? 'text-mocha hover:text-espresso' : 'text-ivory/70 hover:text-ivory'">{{ $short }}</a>
                                 @endif
                             @endforeach
@@ -258,7 +267,7 @@
                             @if (app()->getLocale() === $code)
                                 <span class="font-semibold text-gold">{{ $short }}</span>
                             @else
-                                <a href="{{ route('lang.switch', $code) }}" class="text-mocha hover:text-espresso">{{ $short }}</a>
+                                <a href="{{ $code === 'en' ? url('/') : url('/'.$code) }}" hreflang="{{ $code }}" class="text-mocha hover:text-espresso">{{ $short }}</a>
                             @endif
                         @endforeach
                     </span>
