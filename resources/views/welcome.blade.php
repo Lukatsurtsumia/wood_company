@@ -16,15 +16,23 @@
     $ogImage  = $siteUrl.'/images/studio.jpg';
     $googleUrl = 'https://share.google/VGWRc32chaPFQJYvK'; // Google Business Profile (share link)
 
+    // MUST match the Google Business Profile name character-for-character.
+    // Google links a site to a profile partly by matching name + phone; when the
+    // site said "Arte" and the profile said "Arte Wood Company" it could not.
+    $legalName = 'Arte Wood Company';
+
     // LocalBusiness structured data (schema.org) so Google understands this is
     // a real Nice-based restoration business for local search + the map pack.
     $jsonLd = [
         '@context'    => 'https://schema.org',
         '@type'       => 'HomeAndConstructionBusiness',
-        'name'        => $brand,
+        '@id'         => $siteUrl.'#business',
+        'name'        => $legalName,
+        'alternateName' => $brand,
         'image'       => $ogImage,
+        'logo'        => $siteUrl.'/images/logo.png',
         'url'         => $siteUrl,
-        'sameAs'      => $googleUrl,
+        'sameAs'      => [$googleUrl],
         'telephone'   => $phone,
         'email'       => $email,
         'description' => $metaDesc,
@@ -36,7 +44,28 @@
             'addressRegion'   => "Provence-Alpes-Côte d'Azur",
             'addressCountry'  => 'FR',
         ],
-        'areaServed'  => ['@type' => 'City', 'name' => 'Nice'],
+        // No shopfront: this is a service-area business, so list the communes
+        // actually covered rather than a single city pin.
+        'areaServed'  => array_map(
+            fn ($c) => ['@type' => 'City', 'name' => $c],
+            ['Nice', 'Cagnes-sur-Mer', 'Saint-Laurent-du-Var', 'Villefranche-sur-Mer', 'Antibes', 'Monaco']
+        ),
+        // Spelled out in French too - this is what local customers actually type.
+        'hasOfferCatalog' => [
+            '@type' => 'OfferCatalog',
+            'name'  => 'Restauration de meubles, portes et fenêtres',
+            'itemListElement' => array_map(fn ($s) => [
+                '@type' => 'Offer',
+                'itemOffered' => ['@type' => 'Service', 'name' => $s],
+            ], [
+                'Restauration de meubles',
+                'Rénovation de meubles anciens',
+                'Restauration de portes en bois',
+                'Rénovation de fenêtres en bois',
+                'Ponçage et vernissage',
+                'Ébénisterie et menuiserie sur mesure',
+            ]),
+        ],
         'openingHoursSpecification' => [
             '@type'     => 'OpeningHoursSpecification',
             'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
