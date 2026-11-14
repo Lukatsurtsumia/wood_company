@@ -48,7 +48,8 @@
         // actually covered rather than a single city pin.
         'areaServed'  => array_map(
             fn ($c) => ['@type' => 'City', 'name' => $c],
-            ['Nice', 'Cagnes-sur-Mer', 'Saint-Laurent-du-Var', 'Villefranche-sur-Mer', 'Antibes', 'Monaco']
+            // Must mirror the service area set on the Google Business Profile.
+            ['Nice', 'Cannes', 'Antibes', 'Menton', 'Cagnes-sur-Mer', 'Saint-Laurent-du-Var', 'Villeneuve-Loubet']
         ),
         // Spelled out in French too - this is what local customers actually type.
         'hasOfferCatalog' => [
